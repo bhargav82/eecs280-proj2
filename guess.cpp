@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <random>
-
+#include <fstream>
 // default constructor
 Guess::Guess( ) : Game()
 {
@@ -17,6 +17,22 @@ Guess::Guess( ) : Game()
 
 	// read the old scoreboard file here
 	// populate the game's scoreboard object
+	
+	const std::string filename = "hangmanScore.txt";
+	this->highScores = readHighScores(filename);
+	sortScoreHighToLow();
+	Player playersArray[10];
+
+	for (auto l = 0; l < highScores.size(); ++l) {
+		const std::string tempName = highScores[l].first;
+		playersArray[l] = tempPlayer;
+	}
+	
+
+	for (auto player : highScores)
+	{
+		std::cout << player.first << " " << player.second << std::endl;
+	}
 
 }
 
@@ -103,11 +119,108 @@ void Guess::getInput()
 	return;
 }
 
+
+
+std::vector<std::pair<std::string, int>> Guess::readHighScores(const std::string filename)
+{
+	std::ifstream file;
+    file.open(filename);
+
+    if ( !file.is_open() )
+    {
+        throw std::runtime_error("File could not be opened.");
+    }
+
+	std::string line;
+
+    while (std::getline(file, line))
+    {
+		std::pair<std::string, int> currentPlayerInfo;
+
+		std::stringstream ss(line);
+		std::string name;
+		std::string score;
+		
+		std::getline(ss, name, ',');
+		currentPlayerInfo.first = name;
+
+		std::getline(ss, score);
+		currentPlayerInfo.second = stoi(score);
+
+		highScores.push_back(currentPlayerInfo);
+    }
+
+    file.close();
+	return highScores;
+
+}
+
 // needs to be implemented as part of the first task
 bool Guess::addScore( HighScore newScore )
 {
+
+	/*
+	1. go through highscores member variables, find max
+	2. check if newScore.score is smaller than max
+	3. if smaller than max, replace max with newScore (can reorder later), return true
+	4. if not smaller, return false
+
+	*/
+
+	int max = (this->highScores).at(0).second;
+	int stringPosition = 0;
+
+	for (size_t i=0; i < highScores.size(); i++)
+	{
+		if (max < highScores.at(i).second)
+		{
+			max = highScores.at(i).second;
+			stringPosition = i;																// finds the string positon of the current max (worst) score
+		}
+	}
+
+
+	// if the newScore is better (less) than the worst (max) HighScore, then replace and return true
+	if(max > newScore.getScore())
+	{
+		   highScores.at(stringPosition).first = newScore.getName();
+		   highScores.at(stringPosition).second = newScore.getScore();
+		   return true;
+	}
+	
+	
 	return false;
 }
+
+
+// sorts top 10 by score puts into top10list
+void Guess::sortScoreHighToLow() {
+	int val1 = highScores[0].second;
+	int tempVal = 0;
+	std::string tempName = "";
+
+	for (auto i = 1; i < highScores.size(); ++i) {
+		if (highScores[i].second < val1) {
+			tempVal = highScores[i - 1].second;
+			tempName = highScores[i - 1].first;
+			
+			highScores[i - 1].first = highScores[i].first;
+			highScores[i - 1].second = highScores[i].second;
+
+			highScores[i].second = tempVal;
+			highScores[i].first = tempName;
+		}
+
+		if (i < highScores.size() - 1) {
+			val1 = highScores[i].second;
+		}
+	}
+
+	return;
+}
+
+
+
 
 // handles the entire process of playing a single game
 int Guess::play( const Player& player )

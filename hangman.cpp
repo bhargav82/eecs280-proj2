@@ -1,60 +1,30 @@
 #include "hangman.hpp"
-#include <vector>
-#include <string>
 #include <fstream>
 #include <random>
-#include <set>
+
 
 
 /* REQUIRES: 
    EFFECTS: Creates a word object, stores random word as 
    RESULTS: initializes Hangman game
 */
-Hangman::Hangman () : Game()
+Hangman::Hangman() : Game()
 {
-    Word w1;
+
     std::string file = "wordList.txt";
-    w1.keyword = randomWordGenerator(createWordList(file));                                     // generates word list from text file, chooses random word
+    keyword = randomWordGenerator(createWordList(file));                                     // generates word list from text file, chooses random word
 
 
-    std::set<char> wordUniqueLetters = findUniqueLetter(w1.keyword);
-    w1.unique_letters = wordUniqueLetters;
-
-
-
-    
-}
-
-/* REQUIRES: keyword (randomly chosen), should be lowercase
-   EFFECTS: goes through word and creates a set of unique characters
-   RESULTS: set of chars, (sets are auto unique)
-*/
-
-std::set<char> findUniqueLetter(std::string& keyword)
-{
-    std::set<char> uniqueLetters;
-    for (char& c : keyword)
-    {
-        uniqueLetters.insert(c);
-    }
-
-    return uniqueLetters;
-    
+    std::set<char> wordUniqueLetters = findUniqueLetters(keyword);
+    unique_letters = wordUniqueLetters;
+ 
 }
 
 
 
-/* REQUIRES: word (each word of text file)
-   EFFECTS: makes each letter lowercase
-   RESULTS: changes word in place to lowercase version
-*/
-void toLower(std::string& word)
+Hangman::~Hangman()
 {
-    for (char& c : word)
-    {
-        c = std::tolower(c);
-    }
-
+    std::cout << "Hangman Destructor." << std::endl;
 }
 
 
@@ -62,7 +32,7 @@ void toLower(std::string& word)
    EFFECTS: if file can be opened, a vector of strings is created of lowercase words from text file, if not throws error
    RESULTS: a vector of strings 
 */
-const std::vector<std::string> createWordList(const std::string& filename)
+const std::vector<std::string> Hangman::createWordList(const std::string& filename)
 {
 
     std::ifstream file;
@@ -79,7 +49,7 @@ const std::vector<std::string> createWordList(const std::string& filename)
 
     while (std::getline(file, word))
     {
-        toLower(word);
+        wordToLower(word);
         wordList.at(index++) = word;
     }
 
@@ -93,31 +63,48 @@ const std::vector<std::string> createWordList(const std::string& filename)
    EFFECTS: creates a random int from 0 to 999  
    RESULTS: word at random index of vector
 */
-const std::string randomWordGenerator(const std::vector<std::string>& wordList)
+const std::string Hangman::randomWordGenerator(const std::vector<std::string>& wordList)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distribution(0, 999);
 
     return wordList.at(distribution(gen));
-
 }
 
 
-/* REQUIRES: lowercase letter guess, vector of already guessed letters
-   EFFECTS: checks if user has inputted a valid letter and has it guessed it already 
-   RESULTS: false if guessed or not a letter, true elsewise
+/* REQUIRES: keyword (randomly chosen), should be lowercase
+   EFFECTS: goes through word and creates a set of unique characters
+   RESULTS: set of chars, (sets are auto unique)
 */
-bool checkGuess(char userGuess, std::vector<char> guessedLetters)
+std::set<char> Hangman::findUniqueLetters(std::string& keyword)
 {
+    std::set<char> uniqueLetters;
+    for (char& c : keyword)
+    {
+        uniqueLetters.insert(c);
+    }
 
+    return uniqueLetters;
+}
+
+
+
+/* REQUIRES: letter guess, vector of already guessed letters
+   EFFECTS: checks if user has inputted a valid letter -> if so, converts to lowercase and checks against guessed letters 
+   RESULTS: false if already guessed or not valid letter, true is new letter
+*/
+bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
+{
     if (!isalpha(userGuess))
     {
         return false;
     }
 
+    userGuess = std::tolower(userGuess);
     for (char letter : guessedLetters)
     {
+        
         if (userGuess == letter)
         {
             return false;
@@ -129,5 +116,37 @@ bool checkGuess(char userGuess, std::vector<char> guessedLetters)
 
 
 
+/* REQUIRES: word (each word of text file)
+   EFFECTS: makes each letter lowercase
+   RESULTS: changes word in place to lowercase version
+*/
+void Hangman::wordToLower(std::string& word)
+{
+    for (char& c : word)
+    {
+        c = std::tolower(c);
+    }
 
+}
 
+// IMPLEMENT THESE PURE VIRTUAL FUNCTIONS
+
+void Hangman::drawBoard() 
+{
+
+}
+void Hangman::getInput() 
+{
+
+}
+bool Hangman::addScore( HighScore newScore )
+{
+        return true;
+}
+int Hangman::play(const Player&) 
+{
+        return 1;
+}
+void Hangman::resetGame() {
+
+}

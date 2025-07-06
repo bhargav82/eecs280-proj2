@@ -15,6 +15,9 @@ public:
 	HighScore();
 	HighScore( Player _p, int _score );
 	std::string toStr();
+
+	int getScore();
+	std::string getName();
 };
 
 #endif

@@ -17,3 +17,14 @@ std::string HighScore::toStr()
 	ss << this->p.getName() << "\t" << this->score;
 	return ss.str();
 }
+
+int HighScore::getScore()
+{
+	return this->score;
+}
+
+std::string HighScore::getName()
+{
+	return (this->p).getName();
+
+}

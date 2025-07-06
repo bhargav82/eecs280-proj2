@@ -1,4 +1,8 @@
 #include "game.hpp"
+#include <set>
+#include <vector>
+#include <string>
+
 
 
 class Hangman : public Game
@@ -14,23 +18,21 @@ public:
 
     // game functionality
     Hangman();
-    void toLower(std::string& dirtyWord);
+    ~Hangman();
+    
     const std::vector<std::string> createWordList(const std::string& filename);
     const std::string randomWordGenerator(const std::vector<std::string>& listOfAllWords);
 
-    bool checkGuess(char c, std::vector<char> guessedLetters);
-    std::set<char> findUniqueLetter(std::string& keyword);
+    void wordToLower(std::string& dirtyWord);
+    bool checkGuess(char c, std::set<char> guessedLetters);
+    std::set<char> findUniqueLetters(std::string& keyword);
 
 
-
-    // create word object each time you start a new game
-    class Word 
-    {
-    public:
+    private:
         std::string keyword;                                    // randomly chosen word
         std::set<char> unique_letters;                          // unique letters that checks against guessed characters
 
-    };
+ 
 };
 
 

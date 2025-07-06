@@ -29,11 +29,17 @@ public: // these functions (usually not variables) are available to anyone
 	Guess( );
 	virtual ~Guess() override;
 
+	virtual void sortScoreHighToLow();
 	virtual void resetGame( ) override;
 	virtual void drawBoard() override;
 	virtual void getInput() override;
 	virtual bool addScore( HighScore ) override;
 	virtual int  play( const Player& ) override;
+
+
+	std::vector<std::pair<std::string, int>> highScores; 
+	std::vector<std::pair<std::string, int>> readHighScores(const std::string filename);
+
 }; // make sure you don't forget this semicolon because it can be difficult to find from error messages
 
 #endif

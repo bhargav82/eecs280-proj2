@@ -45,7 +45,8 @@ Card Shoe::playCard()
 }
 
 
-// find random index, swap last with random index, and then decrement array
+
+
 void Shoe::shuffle() 
 {
     std::vector <Card> playShoe;
@@ -61,9 +62,10 @@ void Shoe::shuffle()
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> distribution(0, playShoe.size() - 1);
-        Card temp = playShoe[distribution(gen)];
+        int index = distribution(gen);
+        Card temp = playShoe[index];
         playShoe2.push_back(temp);
-        playShoe.erase(playShoe.begin() + distribution(gen)); 
+        playShoe.erase(playShoe.begin() + index); 
 
     }
     

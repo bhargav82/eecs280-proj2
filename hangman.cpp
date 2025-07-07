@@ -24,26 +24,31 @@ Hangman::Hangman() : Game()
 
 int Hangman::play(const Player&) 
 {
+    drawBoard();
     size_t uniqueLettersSize = unique_letters.size(); 
-    std::cout << keyword;
+    std::cout << keyword << std::endl;
     while ((correctCounter <= (uniqueLettersSize)) && strikeCounter < 6)
     {
         if (correctCounter == uniqueLettersSize)
         {
-
+            printHangmanWord(keyword, userGuessedLetters);
             std::cout << "You win" << std::endl;
             break;
         }
-        
-        drawBoard();
+
         getInput();
-        printHangmanWord(keyword, userGuessedLetters);
         correctAndIncorrectGuesses(userInputLetter, userGuessedLetters);
+        printHangmanGraphic(strikeCounter);
+        printHangmanLettersLeft(alphabet, alphabet.size());
+        printHangmanWord(keyword, userGuessedLetters);
+        
+        
         
     }
 
     if (strikeCounter == 6)
     {
+       
         std::cout << "You lost" << std::endl;
     }
 
@@ -54,15 +59,11 @@ int Hangman::play(const Player&)
 
 
 
-
-
-
-
 void Hangman::drawBoard()
 {
 
+    printHangmanMenu();
     printHangmanGraphic(strikeCounter);
-
     printHangmanWord(keyword, userGuessedLetters);
 
 }
@@ -81,8 +82,13 @@ void Hangman::getInput()
 
 void Hangman::correctAndIncorrectGuesses(char userInputLetter, std::set<char>& alreadyGuessedLetters)
 {
-    if (unique_letters.count(userInputLetter)){
+    alphabet.erase(std::remove(alphabet.begin(), alphabet.end(), userInputLetter), alphabet.end());
+    if (unique_letters.count(userInputLetter) && checkGuess(userInputLetter, alreadyGuessedLetters)){
         correctCounter++;
+    }
+    else if (!checkGuess(userInputLetter, alreadyGuessedLetters))
+    {
+        std::cout << "Already guessed! Please enter a new letter." << std::endl;
     }
     else{
         strikeCounter++;
@@ -116,6 +122,7 @@ bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
         }
     }
 
+    
     return true;
 }
 
@@ -129,7 +136,7 @@ bool Hangman::addScore( HighScore newScore )
 }
 
 void Hangman::resetGame() {
-
+    
 }
 
 
@@ -201,7 +208,7 @@ std::set<char> Hangman::findUniqueLetters(std::string& keyword)
 // REQUIRES: nothing
 // MODIFIES: cout
 // EFFECTS: prints a menu displaying the rules for the Hangman game
-void printHangmanMenu() {
+void Hangman::printHangmanMenu() {
     std::cout << "----------------------------------------------------" << std::endl;
     std::cout << "Welcome to Hangman!! Here are the rules of the game." << std::endl;
     std::cout << "----------------------------------------------------" << std::endl;
@@ -219,9 +226,9 @@ void printHangmanMenu() {
 // REQUIRES: nothing
 // MODIFIES: cout
 // EFFECTS: prints the hangman letters left to guess to the terminal
-void printHangmanLettersLeft(std::vector<char> remainingLetters, int size) {
+void Hangman::printHangmanLettersLeft(std::vector<char>& remainingLetters, size_t size) {
     std::cout << "Remaining letters: ";
-    for (int i = 0; i < size - 1; ++i) {
+    for (size_t i = 0; i < size - 1; ++i) {
         std::cout << remainingLetters[i] << ", ";
         if (i == 12) {
             std::cout << std::endl << "                   ";

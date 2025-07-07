@@ -30,8 +30,8 @@ public:
     void printHangmanWord(std::string keyword, std::set<char> lettersGuessed);
     void printHangmanGraphic(int strikeCount);
     void correctAndIncorrectGuesses(char userInputLetter, std::set<char>& alreadyGuessedLetters);
-    
-
+    void printHangmanLettersLeft(std::vector<char>& remainingLetters, size_t size);
+    void printHangmanMenu();
 
     private:
         char userInputLetter;
@@ -40,7 +40,11 @@ public:
         int strikeCounter = 0;
         std::set<char> userGuessedLetters;
         int correctCounter = 0;
- 
+        std::vector<char> alphabet = 
+        {
+            'a','b','c','d','e','f','g','h','i','j','k','l','m',
+            'n','o','p','q','r','s','t','u','v','w','x','y','z'
+        };
 };
 
 

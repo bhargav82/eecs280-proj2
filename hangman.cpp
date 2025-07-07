@@ -133,9 +133,9 @@ void Hangman::resetGame() {
     this->unique_letters = {};
     this->userInputLetter = {};
     this->alphabet =  {
-            'a','b','c','d','e','f','g','h','i','j','k','l','m',
-            'n','o','p','q','r','s','t','u','v','w','x','y','z'
-        };
+        'a','b','c','d','e','f','g','h','i','j','k','l','m',
+        'n','o','p','q','r','s','t','u','v','w','x','y','z'
+    };
     std::set<char> wordUniqueLetters = findUniqueLetters(keyword);
     unique_letters = wordUniqueLetters;
 

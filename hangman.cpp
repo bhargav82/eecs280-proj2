@@ -17,15 +17,123 @@ Hangman::Hangman() : Game()
 
     std::set<char> wordUniqueLetters = findUniqueLetters(keyword);
     unique_letters = wordUniqueLetters;
- 
+    
+
+
 }
 
-
-
-Hangman::~Hangman()
+int Hangman::play(const Player&) 
 {
-    std::cout << "Hangman Destructor." << std::endl;
+    size_t uniqueLettersSize = unique_letters.size(); 
+    std::cout << keyword;
+    while ((correctCounter <= (uniqueLettersSize)) && strikeCounter < 6)
+    {
+        if (correctCounter == uniqueLettersSize)
+        {
+
+            std::cout << "You win" << std::endl;
+            break;
+        }
+        
+        drawBoard();
+        getInput();
+        printHangmanWord(keyword, userGuessedLetters);
+        correctAndIncorrectGuesses(userInputLetter, userGuessedLetters);
+        
+    }
+
+    if (strikeCounter == 6)
+    {
+        std::cout << "You lost" << std::endl;
+    }
+
+   
+        
+    return 1;
 }
+
+
+
+
+
+
+
+void Hangman::drawBoard()
+{
+
+    printHangmanGraphic(strikeCounter);
+
+    printHangmanWord(keyword, userGuessedLetters);
+
+}
+
+
+void Hangman::getInput() 
+{
+   
+    std::cout << "Guess a letter: " << std::endl;
+    std::cin >> userInputLetter;
+
+   
+
+}
+
+
+void Hangman::correctAndIncorrectGuesses(char userInputLetter, std::set<char>& alreadyGuessedLetters)
+{
+    if (unique_letters.count(userInputLetter)){
+        correctCounter++;
+    }
+    else{
+        strikeCounter++;
+    }
+    alreadyGuessedLetters.insert(userInputLetter);
+}
+
+
+
+
+
+
+/* REQUIRES: letter guess, vector of already guessed letters
+   EFFECTS: checks if user has inputted a valid letter -> if so, converts to lowercase and checks against guessed letters 
+   RESULTS: false if already guessed or not valid letter, true is new letter
+*/
+bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
+{
+    if (!isalpha(userGuess))
+    {
+        return false;
+    }
+
+    userGuess = std::tolower(userGuess);
+    for (char letter : guessedLetters)
+    {
+        
+        if (userGuess == letter)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+
+
+
+bool Hangman::addScore( HighScore newScore )
+{
+        return true;
+}
+
+void Hangman::resetGame() {
+
+}
+
+
+
 
 
 /* REQUIRES: filename as string
@@ -90,31 +198,138 @@ std::set<char> Hangman::findUniqueLetters(std::string& keyword)
 
 
 
-/* REQUIRES: letter guess, vector of already guessed letters
-   EFFECTS: checks if user has inputted a valid letter -> if so, converts to lowercase and checks against guessed letters 
-   RESULTS: false if already guessed or not valid letter, true is new letter
-*/
-bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
-{
-    if (!isalpha(userGuess))
-    {
-        return false;
-    }
+// REQUIRES: nothing
+// MODIFIES: cout
+// EFFECTS: prints a menu displaying the rules for the Hangman game
+void printHangmanMenu() {
+    std::cout << "----------------------------------------------------" << std::endl;
+    std::cout << "Welcome to Hangman!! Here are the rules of the game." << std::endl;
+    std::cout << "----------------------------------------------------" << std::endl;
+    std::cout << "~ We will give you a random word to guess. This word" << std::endl;
+    std::cout << "  will not have any spaces or non-letter characters." << std::endl << std::endl;
+    std::cout << "~ You will be prompted to type a letter as a guess. " << std::endl;
+    std::cout << "  If this letter is in the word, it will be revealed." << std::endl;
+    std::cout << "  Otherwise, you will receive a strike."              << std::endl << std::endl;
+    std::cout << "~ As you receive strikes, the hangman will be drawn." << std::endl;
+    std::cout << "  If you get six strikes, you lose the game."         << std::endl << std::endl;
+    std::cout << "          ** Good luck, and have fun!! **           " << std::endl;
+    std::cout << "----------------------------------------------------" << std::endl << std::endl;
+}
 
-    userGuess = std::tolower(userGuess);
-    for (char letter : guessedLetters)
-    {
-        
-        if (userGuess == letter)
-        {
-            return false;
+// REQUIRES: nothing
+// MODIFIES: cout
+// EFFECTS: prints the hangman letters left to guess to the terminal
+void printHangmanLettersLeft(std::vector<char> remainingLetters, int size) {
+    std::cout << "Remaining letters: ";
+    for (int i = 0; i < size - 1; ++i) {
+        std::cout << remainingLetters[i] << ", ";
+        if (i == 12) {
+            std::cout << std::endl << "                   ";
         }
     }
-
-    return true;
+    std::cout << remainingLetters[size - 1] << std::endl;
+    std::cout << std::endl << "----------------------------------------------------" << std::endl;
 }
 
 
+// REQUIRES: the keyword and a vector of letters already guessed
+// MODIFIES: cout
+// EFFECTS: prints the hangman word with correctly guessed letters filled in
+void Hangman::printHangmanWord(std::string keyword, std::set<char> lettersGuessed)
+{
+    std::vector<char> lettersGuessedVector(lettersGuessed.begin(), lettersGuessed.end());
+    char letterToPrint;
+
+    for (auto i = 0; i < keyword.length(); ++i) {
+        bool letterMatch = false;
+        for (auto j = 0; j < lettersGuessedVector.size(); ++j) {
+            if (keyword[i] == lettersGuessedVector[j]) {
+                letterToPrint = lettersGuessedVector[j];
+                letterMatch = true;
+            }
+        }
+
+        if (letterMatch) {
+            std::cout << letterToPrint << "  ";
+        }
+        else {
+            std::cout << "__  ";
+        
+        }
+        
+
+    }
+    std::cout << std::endl << "----------------------------------------------------" << std::endl;
+}
+
+
+
+// REQUIRES: nothing
+// MODIFIES: cout
+// EFFECTS: prints the hangman graphic to the terminal
+void Hangman::printHangmanGraphic(int strikeCount) {
+    if (strikeCount == 0) {
+        std::cout << "           ------     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |    " << std::endl;
+        std::cout << "           | " << std::endl;
+        std::cout << "           |     " << std::endl;
+        std::cout << "          ---         " << std::endl; 
+    }
+    else if (strikeCount == 1) {
+        std::cout << "           ------     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |    O     " << std::endl;
+        std::cout << "           | " << std::endl;
+        std::cout << "           |          " << std::endl;
+        std::cout << "          ---         " << std::endl; 
+    }
+    else if (strikeCount == 2) {
+        std::cout << "           ------     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |    O     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |          " << std::endl;
+        std::cout << "          ---         " << std::endl; 
+    }
+    if (strikeCount == 3) {
+        std::cout << "           ------     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |    O     " << std::endl;
+        std::cout << "           |    |/    " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |          " << std::endl;
+        std::cout << "          ---         " << std::endl; 
+    }
+    if (strikeCount == 4) {
+        std::cout << "           ------     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |    O     " << std::endl;
+        std::cout << "           |   \\|/   " << std::endl;
+        std::cout << "           |    |    " << std::endl;
+        std::cout << "           |          " << std::endl;
+        std::cout << "          ---         " << std::endl; 
+    }
+    if (strikeCount == 5) {
+        std::cout << "           ------     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |    O     " << std::endl;
+        std::cout << "           |   \\|/   " << std::endl;
+        std::cout << "           |    |    " << std::endl;
+        std::cout << "           |     \\      " << std::endl;
+        std::cout << "          ---         " << std::endl; 
+    } 
+    if (strikeCount == 6) {
+        std::cout << "           ------     " << std::endl;
+        std::cout << "           |    |     " << std::endl;
+        std::cout << "           |    O     " << std::endl;
+        std::cout << "           |   \\|/    " << std::endl;
+        std::cout << "           |    |    " << std::endl;
+        std::cout << "           |   / \\      " << std::endl;
+        std::cout << "          ---         " << std::endl; 
+    }
+    std::cout << std::endl;
+}
 
 /* REQUIRES: word (each word of text file)
    EFFECTS: makes each letter lowercase
@@ -129,24 +344,7 @@ void Hangman::wordToLower(std::string& word)
 
 }
 
-// IMPLEMENT THESE PURE VIRTUAL FUNCTIONS
-
-void Hangman::drawBoard() 
+Hangman::~Hangman()
 {
-
-}
-void Hangman::getInput() 
-{
-
-}
-bool Hangman::addScore( HighScore newScore )
-{
-        return true;
-}
-int Hangman::play(const Player&) 
-{
-        return 1;
-}
-void Hangman::resetGame() {
-
+    std::cout << "Hangman Destructor." << std::endl;
 }

@@ -22,10 +22,12 @@ Guess::Guess( ) : Game()
 	this->highScores = readHighScores(filename);
 	sortScoreHighToLow();
 	Player playersArray[10];
+	
 
 	for (auto l = 0; l < highScores.size(); ++l) {
 		const std::string tempName = highScores[l].first;
-		playersArray[l] = tempPlayer;
+		Player tempPlayer(tempName);
+		//playersArray[l] = Player(tempName);
 	}
 	
 

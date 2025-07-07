@@ -27,11 +27,19 @@ public:
     bool checkGuess(char c, std::set<char> guessedLetters);
     std::set<char> findUniqueLetters(std::string& keyword);
 
+    void printHangmanWord(std::string keyword, std::set<char> lettersGuessed);
+    void printHangmanGraphic(int strikeCount);
+    void correctAndIncorrectGuesses(char userInputLetter, std::set<char>& alreadyGuessedLetters);
+    
+
 
     private:
+        char userInputLetter;
         std::string keyword;                                    // randomly chosen word
         std::set<char> unique_letters;                          // unique letters that checks against guessed characters
-
+        int strikeCounter = 0;
+        std::set<char> userGuessedLetters;
+        int correctCounter = 0;
  
 };
 

@@ -14,6 +14,3 @@ const std::string Player::getName() const
 	return this->name;
 }
 
-void Player::setName(std::string userName) {
-	name = userName;
-}

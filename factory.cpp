@@ -2,6 +2,7 @@
 #include "consoledraw.hpp"
 #include "guess.hpp"
 #include "tictactoe.hpp"
+#include "hangman.hpp"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ Game* pickGame()
 			<< "0: Quit" << endl
 			<< "1: Tic Tac Toe - a classic" << endl
 			<< "2: Guess! - guess the number between 1 and 100" << endl
+			<< "3: Hangman! - guess the word" << endl
 		;
 		cout << "Enter your choice here: ";
 		cin >> choice;
@@ -36,6 +38,9 @@ Game* pickGame()
 				break;
 			case 2:
 				result = new Guess();
+				break;
+			case 3:
+				result = new Hangman();
 				break;
 			default:
 				cout << "choice not recognized! choose again!" << endl;

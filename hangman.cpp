@@ -21,7 +21,6 @@ Hangman::Hangman() : Game()
 int Hangman::play(const Player&) 
 {
     drawBoard();
-    std::cout << keyword << std::endl;
     size_t uniqueLettersSize = unique_letters.size(); 
     while ((correctCounter <= (uniqueLettersSize)) && strikeCounter < 6)
     {
@@ -94,10 +93,6 @@ void Hangman::correctAndIncorrectGuesses(char userInputLetter, std::set<char>& a
 }
 
 
-
-
-
-
 /* REQUIRES: letter guess, vector of already guessed letters
    EFFECTS: checks if user has inputted a valid letter -> if so, converts to lowercase and checks against guessed letters 
    RESULTS: false if already guessed or not valid letter, true is new letter
@@ -124,16 +119,20 @@ bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
 }
 
 
-
-
-
 bool Hangman::addScore( HighScore newScore )
 {
         return true;
 }
 
 void Hangman::resetGame() {
-    
+    this->keyword = randomWordGenerator(createWordList("wordList.txt"));
+    this->strikeCounter = 0;
+    this->correctCounter = 0;
+    this->userGuessedLetters = {};
+    this->unique_letters = {};
+    this->userInputLetter = {};
+    std::set<char> wordUniqueLetters = findUniqueLetters(keyword);
+    unique_letters = wordUniqueLetters;
 }
 
 

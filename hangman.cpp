@@ -10,29 +10,27 @@
 */
 Hangman::Hangman() : Game()
 {
-
     std::string file = "wordList.txt";
     keyword = randomWordGenerator(createWordList(file));                                     // generates word list from text file, chooses random word
 
 
     std::set<char> wordUniqueLetters = findUniqueLetters(keyword);
     unique_letters = wordUniqueLetters;
-    
-
-
 }
 
 int Hangman::play(const Player&) 
 {
     drawBoard();
-    size_t uniqueLettersSize = unique_letters.size(); 
     std::cout << keyword << std::endl;
+    size_t uniqueLettersSize = unique_letters.size(); 
     while ((correctCounter <= (uniqueLettersSize)) && strikeCounter < 6)
     {
         if (correctCounter == uniqueLettersSize)
         {
             printHangmanWord(keyword, userGuessedLetters);
-            std::cout << "You win" << std::endl;
+            std::cout << "||   Good job! You correctly guessed the hidden   ||" << std::endl;
+            std::cout << "            word with only " << strikeCounter << " mistake(s)." << std::endl;
+            std::cout << "----------------------------------------------------" << std::endl;
             break;
         }
 
@@ -48,8 +46,9 @@ int Hangman::play(const Player&)
 
     if (strikeCounter == 6)
     {
-       
-        std::cout << "You lost" << std::endl;
+        std::cout << "||   Unlucky! You were unable to guess the word.  ||" << std::endl;
+        std::cout << "         The correct answer was: " << keyword << std::endl;
+        std::cout << "----------------------------------------------------" << std::endl;
     }
 
    
@@ -71,12 +70,9 @@ void Hangman::drawBoard()
 
 void Hangman::getInput() 
 {
-   
-    std::cout << "Guess a letter: " << std::endl;
+    std::cout << "Guess a letter: ";
     std::cin >> userInputLetter;
-
-   
-
+    std::cout << std::endl << "----------------------------------------------------" << std::endl;
 }
 
 
@@ -88,7 +84,8 @@ void Hangman::correctAndIncorrectGuesses(char userInputLetter, std::set<char>& a
     }
     else if (!checkGuess(userInputLetter, alreadyGuessedLetters))
     {
-        std::cout << "Already guessed! Please enter a new letter." << std::endl;
+        std::cout << "*** Already guessed! Please enter a new letter. ***" << std::endl;
+        std::cout << "----------------------------------------------------" << std::endl;
     }
     else{
         strikeCounter++;
@@ -230,7 +227,7 @@ void Hangman::printHangmanLettersLeft(std::vector<char>& remainingLetters, size_
     std::cout << "Remaining letters: ";
     for (size_t i = 0; i < size - 1; ++i) {
         std::cout << remainingLetters[i] << ", ";
-        if (i == 12) {
+        if (i == 10) {
             std::cout << std::endl << "                   ";
         }
     }

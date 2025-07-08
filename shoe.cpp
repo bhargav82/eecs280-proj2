@@ -57,10 +57,12 @@ void Shoe::shuffle()
         playShoe.push_back(temp);
     }
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
     while(playShoe.size() > 0)
     {
-        std::random_device rd;
-        std::mt19937 gen(rd());
+        
         std::uniform_int_distribution<> distribution(0, playShoe.size() - 1);
         int index = distribution(gen);
         Card temp = playShoe[index];

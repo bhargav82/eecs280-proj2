@@ -14,3 +14,6 @@ void printBlackjackMenu();
 
 };
 
+
+int User::count();
+

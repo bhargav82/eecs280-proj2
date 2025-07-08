@@ -35,6 +35,10 @@ Shoe::Shoe()
 }
 
 
+Card* Shoe::getShoe()
+{
+    return shoeOfCards;
+}
 
 Card Shoe::playCard()
 {
@@ -51,7 +55,7 @@ void Shoe::shuffle()
 {
     std::vector <Card> playShoe;
     std::vector <Card> playShoe2;
-    for(size_t i = 0; i < MAX_CAP; i++)
+    for(int i = 0; i < MAX_CAP; i++)
     {
         Card temp = shoeOfCards[i];
         playShoe.push_back(temp);
@@ -71,7 +75,7 @@ void Shoe::shuffle()
 
     }
     
-    for(size_t i = 0; i < MAX_CAP; i++)
+    for(int i = 0; i < MAX_CAP; i++)
     {
         shoeOfCards[i] = playShoe2[i];
     }

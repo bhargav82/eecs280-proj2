@@ -39,6 +39,8 @@ public:
     // EFFECTS: shuffles the deck
     void shuffle();
 
+    Card* getShoe();
+
 
 private:
     static const int MAX_CAP = 156;

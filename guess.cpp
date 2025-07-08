@@ -158,7 +158,7 @@ std::vector<std::pair<std::string, int>> Guess::readHighScores(const std::string
 }
 
 // needs to be implemented as part of the first task
-bool Guess::addScore( HighScore newScore )
+bool Guess::addScore( HighScore* newScore )
 {
 
 	/*
@@ -183,10 +183,10 @@ bool Guess::addScore( HighScore newScore )
 
 
 	// if the newScore is better (less) than the worst (max) HighScore, then replace and return true
-	if(max > newScore.getScore())
+	if(max > newScore->getScore())
 	{
-		   highScores.at(stringPosition).first = newScore.getName();
-		   highScores.at(stringPosition).second = newScore.getScore();
+		   highScores.at(stringPosition).first = newScore->getName();
+		   highScores.at(stringPosition).second = newScore->getScore();
 		   return true;
 	}
 	

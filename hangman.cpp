@@ -120,7 +120,7 @@ bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
 }
 
 
-bool Hangman::addScore( HighScore newScore )
+bool Hangman::addScore( HighScore* newScore )
 {
         return true;
 }

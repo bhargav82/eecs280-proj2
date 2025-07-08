@@ -13,7 +13,7 @@ void blackjackPlayer::addCard(Card& c)
 User::User()
 {
     chips = 1000;
-    
+    userScore = 0;
 }
 
 
@@ -29,6 +29,10 @@ void User::toStr()
     }
 }
 
+
+Dealer::Dealer() {
+    dealerScore = 0;
+}
 
 
 // make sure its only 1

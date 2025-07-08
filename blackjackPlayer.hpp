@@ -3,9 +3,6 @@
 #include "card.hpp"
 #include "shoe.hpp"
 
-
-
-
 class blackjackPlayer 
 {
     public:
@@ -18,8 +15,6 @@ class blackjackPlayer
 };
 
 
-
-
 class User : public blackjackPlayer
 {
 public:
@@ -29,21 +24,21 @@ public:
 
 private:
     int chips;
+    int userScore;
     std::string userName;
     
 };
 
 
-
-
-
 class Dealer : public blackjackPlayer
 {
 public:
-    
+    Dealer();
+
     void toStr() override;
-    
 
 
+private:
+    int dealerScore;
     
 };

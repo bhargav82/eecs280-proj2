@@ -11,7 +11,7 @@ class Hangman : public Game
 public:
     virtual void drawBoard() override;
 	virtual void getInput() override;
-    virtual bool addScore( HighScore newScore ) override;
+    virtual bool addScore( HighScore* newScore ) override;
 	virtual int play(const Player&) override;
 	virtual void resetGame() override;
 

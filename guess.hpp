@@ -33,7 +33,7 @@ public: // these functions (usually not variables) are available to anyone
 	virtual void resetGame( ) override;
 	virtual void drawBoard() override;
 	virtual void getInput() override;
-	virtual bool addScore( HighScore ) override;
+	virtual bool addScore( HighScore* newScore) override;
 	virtual int  play( const Player& ) override;
 
 

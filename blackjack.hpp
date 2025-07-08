@@ -7,13 +7,18 @@
 
 class Blackjack : public Game{
 public:
-    void printBlackjackMenu();
-    int play();
-    bool hitOrStand(Table& t1);
+    //int play();
+    // virtual function we need to implement
+    void drawBoard() override;
+	void getInput() override;
+	/* returns true if in top 10 */
+	bool addScore( HighScore* newScore ) override;
+	int play(const Player&) override;
+	void resetGame() override;
+
+    ~Blackjack();
 
 private:
-    
-
 
 };
 

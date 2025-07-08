@@ -47,37 +47,42 @@ Card Shoe::playCard()
 }
 
 
+// make another array of size 156, get a random integer from 0-155 (index), put that index of card into top of 2nd shoe
+// in og switch that card index with the last index, decrease range of random integer and repeat
+
 void Shoe::shuffle() 
 {
-    std::vector <Card> playShoe;
-    std::vector <Card> playShoe2;
-    for(int i = 0; i < MAX_CAP; i++)
-    {
-        Card temp = shoeOfCards[i];
-        playShoe.push_back(temp);
-    }
+    Card tempShoe[MAX_CAP];
 
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    while(playShoe.size() > 0)
+    int range = MAX_CAP - 1;
+    for(size_t i = 0; i < MAX_CAP; i++)
     {
-        
-        std::uniform_int_distribution<> distribution(0, playShoe.size() - 1);
+        std::uniform_int_distribution<> distribution(0, range - i);
         int index = distribution(gen);
-        Card temp = playShoe[index];
-        playShoe2.push_back(temp);
-        playShoe.erase(playShoe.begin() + index); 
+        tempShoe[i] = shoeOfCards[index];
+
+        Card temp1;
+        Card temp2;
+        
+        temp1 = shoeOfCards[index];
+        temp2 = shoeOfCards[MAX_CAP - i - 1];
+        
+        shoeOfCards[index] = temp2;
+        shoeOfCards[MAX_CAP - i - 1] = temp1;
 
     }
     
     for(int i = 0; i < MAX_CAP; i++)
     {
-        shoeOfCards[i] = playShoe2[i];
+        shoeOfCards[i] = tempShoe[i];
     }
 
     return;
 }
+
 
 
 

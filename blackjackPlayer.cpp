@@ -5,16 +5,25 @@
 Table::Table()
 {
     this->shuffle();                                                    // shuffles shoe of cards
-    tableShoe = this->getShoe();                                        // stores shoe in table shoe (IDK IF THIS IS NECESSARY)
+
+    this->player.getCardFromShoe();
+    this->player.getCardFromShoe();
+    
+    
 
 }
 
 
 User::User()
 {
-    Card newCard = this->playCard();
-    this->userHand.push_back(newCard);
+    chips = 1000;
     
+}
+
+void User::getCardFromShoe() {
+    
+    Card newCard;
+    this->userHand.push_back(newCard);
 }
 
 void User::toStr()

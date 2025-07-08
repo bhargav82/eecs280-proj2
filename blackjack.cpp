@@ -17,17 +17,3 @@ void printBlackjackMenu(){
     std::cout << "          ** Good luck, and have fun!! **           " << std::endl;
     std::cout << "----------------------------------------------------" << std::endl << std::endl;
 }
-
-
-int count()
-{
-    int handValue = 0
-    
-    for(size_t i = 0; i < userHand; i++)
-    {
-        if(userHand[i].name == "Ace" && handValue > 10)
-        {
-
-        }
-    }
-}

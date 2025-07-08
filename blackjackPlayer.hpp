@@ -8,16 +8,14 @@
 class Table : public Shoe{
 
 public:
-
-    Card* tableShoe = NULL;
-    std::string userName;
-    std::vector<Card> userHand;
-
     Table();
 
-    std::vector<Card> dealerHand;
-
+    virtual void getCardFromShoe() = 0;
+    //virtual int getScore() = 0;
     virtual void toStr() = 0;
+
+    User player;
+    Dealer dealer;
 
 };
 
@@ -28,14 +26,24 @@ public:
     User();
 
     void toStr() override;
+    void getCardFromShoe() override;
+    //int getScore() override;
+    std::vector<Card> userHand;
 
 private:
-    int chips = 1000;
-
+    int chips;
+    std::string userName;
     
 };
 
 class Dealer : public Table
 {
+public:
+    //int getScore() override;
+    //void getCardFromShoe() override;
+    void toStr() override;
+    Dealer();
 
+private: 
+    std::vector<Card> dealerHand;
 };

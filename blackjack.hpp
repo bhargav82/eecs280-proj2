@@ -7,7 +7,6 @@
 
 class Blackjack : public Game{
 public:
-    //int play();
     // virtual function we need to implement
     void drawBoard() override;
 	void getInput() override;

@@ -14,6 +14,33 @@ int main()
     std::cout << "<>  Dealing two cards to both you and the dealer  <>" << std::endl;
     std::cout << "<><><><><><><><><><><><><><><><><><><><><><><><><><>" << std::endl;
     std::cout << "----------------------------------------------------" << std::endl << std::endl;
+
+    std::string tempWager;
+    int wager = 0;
+
+    std::cout << "################################" << std::endl;
+    std::cout << "Your current chips balance: " << t1.player.getChips() << std::endl;
+    std::cout << "################################" << std::endl << std::endl;
+    
+    std::cout << "$$$ Enter your wager (number of chips) $$$ : ";
+    bool invalidInput = true;
+    while (invalidInput)
+    {   
+        
+        std::getline(std::cin, tempWager);
+        
+        try 
+        {
+            wager = std::stoi(tempWager);
+            invalidInput = false;
+        }
+        catch (std::invalid_argument &error)
+        {
+            std::cout << "Please enter a number: ";
+        }
+
+    }
+    
     
     t1.dealer.setScore();
     t1.player.setScore();
@@ -23,7 +50,7 @@ int main()
     t1.dealer.toStr();
     std::cout << std::endl;
     
-
+    
     std::cout << "Your current score: " << t1.player.getScore() << std::endl;
     std::cout << "Dealer's current score: " << t1.dealer.getScore() << std::endl << std::endl;
     

@@ -8,6 +8,7 @@ void blackjackPlayer::addCard(Card& c)
     hand.push_back(c);
 }
 
+int blackjackPlayer::count() {}
 
 
 User::User()

@@ -8,6 +8,7 @@ class blackjackPlayer
     public:
         virtual void toStr() = 0;
         void addCard (Card& c);
+        virtual int count();
 
     protected:                                          
         std::vector<Card> hand;                                               // becomes public later, dealer and user will have their own hand
@@ -20,6 +21,7 @@ class User : public blackjackPlayer
 public:
     User();
     void toStr() override;
+    int getScore();
 
 
 private:
@@ -36,6 +38,7 @@ public:
     Dealer();
 
     void toStr() override;
+    int getScore();
 
 
 private:

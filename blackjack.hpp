@@ -7,13 +7,9 @@
 
 class Blackjack : public Game{
 public:
-    void shuffle();
-    void deal();
-    bool hitOrStand();
-    bool dealMoreCards();
-    bool busted();
-    bool hasSeventeen();
-    bool playerIsWinner();
+    void printBlackjackMenu();
+    int play();
+    bool hitOrStand(Table& t1);
 
 private:
     

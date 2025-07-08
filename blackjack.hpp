@@ -3,13 +3,16 @@
 
 class Blackjack : public Game{
 public:
-// Default constructor
-Blackjack();
+    void shuffle();
+    void deal();
+    bool hitOrStand();
+    bool dealMoreCards();
+    bool busted();
+    bool hasSeventeen();
+    bool playerIsWinner();
 
-// REQUIRES: nothing
-// MODIFIES: cout
-// EFFECTS: prints a menu explaining the game
-void printBlackjackMenu();
+private:
+    
 
 
 };

@@ -142,10 +142,6 @@ void Hangman::resetGame() {
 }
 
 
-
-
-
-
 /* REQUIRES: filename as string
    EFFECTS: if file can be opened, a vector of strings is created of lowercase words from text file, if not throws error
    RESULTS: a vector of strings 

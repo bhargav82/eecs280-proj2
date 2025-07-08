@@ -8,7 +8,23 @@ void blackjackPlayer::addCard(Card& c)
     hand.push_back(c);
 }
 
-int blackjackPlayer::count() {}
+int blackjackPlayer::count() {
+    int handValue = 0;
+    bool hasAce = false;
+
+    for (size_t i = 0; i < hand.size(); i++) {
+        if (hand[i].name == "Ace") {
+            bool hasAce = true;
+        }
+        handValue += hand[i].value;
+    }
+
+    if (hasAce && handValue < 12) {
+        handValue += 10;
+    }
+
+    return handValue;
+}
 
 
 User::User()
@@ -16,9 +32,6 @@ User::User()
     chips = 1000;
     userScore = 0;
 }
-
-
-
 
 void User::toStr()
 {

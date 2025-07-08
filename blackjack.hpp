@@ -1,4 +1,8 @@
+#pragma once
 #include "game.hpp"
+#include "table.hpp"
+#include "card.hpp"
+
 
 
 class Blackjack : public Game{
@@ -18,5 +22,5 @@ private:
 };
 
 
-int User::count();
+//int User::count();
 

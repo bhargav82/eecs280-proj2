@@ -2,16 +2,12 @@
 
 
 
-Table::Table()
+// will push back to the hand, can  change based on who is playing
+void blackjackPlayer::addCard(Card& c)
 {
-    this->shuffle();                                                    // shuffles shoe of cards
-
-    this->player.getCardFromShoe();
-    this->player.getCardFromShoe();
-    
-    
-
+    hand.push_back(c);
 }
+
 
 
 User::User()
@@ -20,15 +16,27 @@ User::User()
     
 }
 
-void User::getCardFromShoe() {
-    
-    Card newCard;
-    this->userHand.push_back(newCard);
-}
+
+
 
 void User::toStr()
 {
-    for (Card c : this->userHand)
+    std::cout << "Player's hand: " << std::endl;
+    std::cout << "---------------" << std::endl << std::endl;
+    for (Card& c : hand)
+    {
+        std::cout << c.name << " of " << c.suit << ", Value: " << c.value << std::endl;
+    }
+}
+
+
+
+// make sure its only 1
+void Dealer::toStr()
+{
+    std::cout << "Dealer's hand: " << std::endl;
+    std::cout << "---------------" << std::endl;
+    for (Card& c : hand)
     {
         std::cout << c.name << " of " << c.suit << ", Value: " << c.value << std::endl;
     }

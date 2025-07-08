@@ -1,5 +1,18 @@
 #include "card.hpp"
 
+Card::Card()
+{
+    suit = "";
+    name = "";
+    value = 0;
+}
+
+Card::Card(int s, int n, int v)
+{
+    suit = suitToString(s);
+    name = nameToString(n);
+    value = v;
+}
 
 
 enum intToSuit {

@@ -1,5 +1,6 @@
 #include "blackjack.hpp"
 
+
 void printBlackjackMenu(){
     std::cout << "----------------------------------------------------" << std::endl;
     std::cout << "Welcome to Blackjack! Here are the rules of the game." << std::endl;
@@ -16,4 +17,20 @@ void printBlackjackMenu(){
     std::cout << "  the dealer goes over 21, the player will win."         << std::endl << std::endl;
     std::cout << "          ** Good luck, and have fun!! **           " << std::endl;
     std::cout << "----------------------------------------------------" << std::endl << std::endl;
+}
+
+
+int main()
+{
+    // Takes in three unshuffled decks, shuffles them, and puts them in one shoe
+    Table t1;
+
+    // Prints a banner explaining some of the core rules of Blackjack
+    printBlackjackMenu();
+
+    t1.player.toStr();
+    std::cout << std::endl;
+    t1.dealer.toStr();
+    
+    return 0;
 }

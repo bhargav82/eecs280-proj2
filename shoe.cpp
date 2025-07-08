@@ -30,8 +30,6 @@ Shoe::Shoe()
         shoeOfCards[index] = d3.deckOfCards.at(i);
         index++;
     }
-
-   
 }
 
 
@@ -47,8 +45,6 @@ Card Shoe::playCard()
 
     return cardToPlay;
 }
-
-
 
 
 void Shoe::shuffle() 

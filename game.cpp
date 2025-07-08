@@ -7,12 +7,17 @@
 Game::Game()
 {
     this->lastInput = "";
+	Player p("n/a");
+	for (int i = 0; i < boardsize; ++i) {
+		top10list[i] = new Highscore(p, 0);
+	}
 }
 
 Game::~Game()
 {
     std::cout << "Game destuctor" << std::endl;
     this->lastInput = "";
+	
 }
 
 void Game::showScoreBoard ()

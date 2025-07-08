@@ -8,8 +8,8 @@
 
 class Card{
 public:
-    Card() : suit("N/A"), name("N/A"), value(-1) {};
-    Card(int s, int n, int v) : suit(suitToString(s)), name(nameToString(n)), value(v) {};
+    Card();
+    Card(int s, int n, int v);
 
     std::string suit;
     std::string name;

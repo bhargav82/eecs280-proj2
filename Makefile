@@ -19,3 +19,6 @@ test-hangman:
 
 clean-test-hangman:
 	rm -f test
+
+blackjack: blackjackPlayer.cpp table.cpp card.cpp shoe.cpp blackjack.cpp
+	g++ -Wall -std=c++17 blackjackPlayer.cpp table.cpp card.cpp shoe.cpp blackjack.cpp -o blackjack

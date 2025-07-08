@@ -3,32 +3,29 @@
 #include "card.hpp"
 #include "shoe.hpp"
 
-// use this class to create a user and dealer
-// table needs to use get shoeOfCards()
-class Table : public Shoe{
 
-public:
-    Table();
 
-    virtual void getCardFromShoe() = 0;
-    //virtual int getScore() = 0;
-    virtual void toStr() = 0;
 
-    User player;
-    Dealer dealer;
+class blackjackPlayer 
+{
+    public:
+        virtual void toStr() = 0;
+        void addCard (Card& c);
+
+    protected:                                          
+        std::vector<Card> hand;                                               // becomes public later, dealer and user will have their own hand
 
 };
 
-class User : public Table
+
+
+
+class User : public blackjackPlayer
 {
 public:
-
     User();
-
     void toStr() override;
-    void getCardFromShoe() override;
-    //int getScore() override;
-    std::vector<Card> userHand;
+
 
 private:
     int chips;
@@ -36,14 +33,17 @@ private:
     
 };
 
-class Dealer : public Table
+
+
+
+
+class Dealer : public blackjackPlayer
 {
 public:
-    //int getScore() override;
-    //void getCardFromShoe() override;
+    
     void toStr() override;
-    Dealer();
+    
 
-private: 
-    std::vector<Card> dealerHand;
+
+    
 };

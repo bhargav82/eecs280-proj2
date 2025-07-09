@@ -1,5 +1,5 @@
 #include "blackjackPlayer.hpp"
-
+#include "consoledraw.hpp"
 
 
 
@@ -47,7 +47,6 @@ int blackjackPlayer::count() {
 User::User()
 {
     chips = 1000;
-    
 }
 
 
@@ -56,13 +55,10 @@ int User::getChips()
     return chips;
 }
 
-
-
-// should pass in wager amount (positive if won - negative if lost)
-void User::addOrRemoveChips(int wagerAmount ){
-    chips += wagerAmount;
-
+void User::setChips(int wagerVal) {
+    chips = chips + wagerVal;
 }
+
 
 int blackjackPlayer::getScore(){
     return score;
@@ -77,15 +73,19 @@ void blackjackPlayer::setScore(){
 
 void User::toStr()
 {
-    std::cout << "Your hand:" << std::endl;
+    std::cout << "Your hand: ";
     for (Card& c : hand)
     {
-        std::cout << "| " << c.name << " of " << c.suit << " | " << std::endl;
+        std::cout << "| " << c.name << " of " << c.suit << " | ";
+    }
+    std::cout << std::endl << std::endl;
 
+    for (Card& c : hand) {
         printCard(c);
         std::cout << std::endl;
     }
-    std::cout << std::endl << std::endl;
+    
+    std::cout << std::endl;
 }
 
 
@@ -99,18 +99,20 @@ Dealer::Dealer() {
 // make sure its only 1
 void Dealer::toStr()
 {
-    std::cout << "Dealer's hand: |";
+    std::cout << "Dealer's hand: ";
     for (Card& c : hand)
     {
-        std::cout << c.name << " of " << c.suit << " | ";
+        std::cout << "| " << c.name << " of " << c.suit << " | ";
+    }
+    std::cout << std::endl << std::endl;
+
+    for (Card& c : hand) {
         printCard(c);
         std::cout << std::endl;
     }
-    std::cout << std::endl << std::endl;
+    
+    std::cout << std::endl;
 }
-
-
-
 
 
 void blackjackPlayer::printCard(Card& card)
@@ -158,5 +160,12 @@ void blackjackPlayer::printCard(Card& card)
         suit = "♠";
     }
 
-    std::cout<< "\n_______\n|" << suit << "    |\n|     |\n|  " << value << "  |\n|     |\n|    " << suit << "|\n──────";
+    if(suit == "♣" || "♠")
+    {
+    std::cout<< "\n_______\n|" << suit << "    |\n|     |\n|  " << value << "  |\n|     |\n|    " << suit << "|\n───────";
+    }
+    else if(suit == "♦" || "♥")
+    {
+    std::cout<< "\n_______\n|" << suit << "    |\n|     |\n|  " << value << "  |\n|     |\n|    " << suit << "|\n───────";
+    }
 }

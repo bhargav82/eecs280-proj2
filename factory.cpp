@@ -46,6 +46,7 @@ Game* pickGame()
 				break;
 			case 4:
 				result = new Blackjack();
+				break;
 			default:
 				cout << "choice not recognized! choose again!" << endl;
 				choice = -1;

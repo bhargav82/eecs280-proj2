@@ -18,7 +18,7 @@ Guess::Guess( ) : Game()
 	// read the old scoreboard file here
 	// populate the game's scoreboard object
 	
-	const std::string filename = "hangmanScore.txt";
+	const std::string filename = "guessHighScore.txt";
 	this->highScores = readHighScores(filename);
 	sortScoreHighToLow();
 	Player playersArray[10];

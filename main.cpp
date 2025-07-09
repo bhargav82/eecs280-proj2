@@ -26,6 +26,7 @@ int main()
 		while( player_wants_to_play )
 		{
 			// play the game once with player
+			
 			game->play( player );
 			
 			// show the scoreboard after each game

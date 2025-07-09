@@ -6,9 +6,6 @@
 class blackjackPlayer 
 {
     public:
-
-        
-
         virtual void toStr() = 0;
         void addCard (Card& c);
         virtual int count();
@@ -19,10 +16,7 @@ class blackjackPlayer
         void setScore(); 
         
         int score = 0;
-        bool scoreEqualsBlackjack();
-
-
-    protected:                                          
+        bool scoreEqualsBlackjack();                                       
         std::vector<Card> hand;                                               // becomes public later, dealer and user will have their own hand
 
 };
@@ -34,8 +28,9 @@ public:
     User();
     void toStr() override; 
   
+    void setChips(int wagerVal);
     int getChips();
-    void addOrRemoveChips(int wagerAmount);
+    
 
 private:
     int chips;

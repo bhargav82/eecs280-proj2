@@ -4,12 +4,14 @@
 
 
 // initialize a new table, should only be one table when the game starts, even for multiple games
-Blackjack::Blackjack()
+Blackjack::Blackjack() : Game()
 {
-    Table blackjackTable;
+                      
 }
 
+void Blackjack::getInput() {
 
+}
 // REQUIRES: nothing
 // MODIFIES: cout
 // EFFECTS: prints a menu explaining some of the basic rules of Blackjack, should only be called once, not when the retry game
@@ -32,7 +34,7 @@ void Blackjack::printBlackjackMenu()
     std::cout << "----------------------------------------------------" << std::endl;
 }
 
-void Blackjack::getWager(int& wager) {
+void Blackjack::getWager() {
     std::cout << "$$$ Enter your wager (number of chips) $$$ : ";
     std::string tempWager = "";
     bool invalidInput = true;
@@ -43,6 +45,7 @@ void Blackjack::getWager(int& wager) {
         
         try 
         {
+            
             wager = std::stoi(tempWager);
             invalidInput = false;
         }
@@ -71,27 +74,28 @@ void Blackjack::drawBoard()
 
 int Blackjack::play(const Player&)
 {
+    Table t1;
 
     this->printBlackjackMenu();                                                       // only call this once
 
     this->drawBoard();
 
     int wager = 0;
-    this->getWager(wager);
+    this->getWager();
 
-    blackjackTable.dealer.setScore();
-    blackjackTable.player.setScore();
+    t1.player.setScore();
+    t1.dealer.setScore();
     
     
-    blackjackTable.player.toStr();
+    t1.player.toStr();
     std::cout << std::endl;
-    blackjackTable.dealer.toStr();
+    t1.dealer.toStr();
     std::cout << std::endl;
 
-    std::cout << "Your current score: " << blackjackTable.player.getScore() << std::endl;
-    std::cout << "Dealer's current score: " << blackjackTable.dealer.getScore() << std::endl << std::endl;
+    std::cout << "Your current score: " << t1.player.getScore() << std::endl;
+    std::cout << "Dealer's current score: " << t1.dealer.getScore() << std::endl << std::endl;
     
-
+    return 0;
 }
 
 
@@ -99,14 +103,11 @@ int main()
 {
     // Takes in three unshuffled decks, shuffles them, and puts them in one shoe
     Table t1;
-
-    this->printBlackjackMenu();                                                       // only call this once
-
-    this->drawBoard();
-
    
+
+    //std::string tempWager;
     int wager = 0;
-    this->getWager(wager);
+    //this->getWager(wager);
     
     
     t1.dealer.setScore();
@@ -163,3 +164,19 @@ int main()
     return 0;
 }
 
+
+
+bool Blackjack::addScore( HighScore* newScore )
+{
+    return false;
+}
+
+
+void Blackjack::resetGame()
+{
+    
+}
+
+Blackjack::~Blackjack(){
+
+}

@@ -3,6 +3,7 @@
 #include "guess.hpp"
 #include "tictactoe.hpp"
 #include "hangman.hpp"
+#include "blackjack.hpp"
 
 using namespace std;
 
@@ -25,7 +26,8 @@ Game* pickGame()
 			<< "1: Tic Tac Toe - a classic" << endl
 			<< "2: Guess! - guess the number between 1 and 100" << endl
 			<< "3: Hangman! - guess the word" << endl
-		;
+			<< "4: Blackjack! - aim for 21" << endl;
+		
 		cout << "Enter your choice here: ";
 		cin >> choice;
 
@@ -42,6 +44,8 @@ Game* pickGame()
 			case 3:
 				result = new Hangman();
 				break;
+			case 4:
+				result = new Blackjack();
 			default:
 				cout << "choice not recognized! choose again!" << endl;
 				choice = -1;

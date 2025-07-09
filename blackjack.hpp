@@ -15,11 +15,16 @@ public:
 	int play(const Player&) override;
 	void resetGame() override;
 
+
+
+	void getWager();
+
     Blackjack();
 
 	Table blackjackTable;
     
 	void printBlackjackMenu();
+	int wager = 0;
 
     ~Blackjack();
 
@@ -28,5 +33,5 @@ private:
 };
 
 
-//int User::count();
+
 

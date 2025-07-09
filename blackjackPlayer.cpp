@@ -2,6 +2,7 @@
 
 
 
+
 // you need a variable called score that keeps track of whoever has the current hand, 
 //look at addCard it works for both players cause it has a variable (hand), hand is used by both
 
@@ -46,7 +47,7 @@ int blackjackPlayer::count() {
 User::User()
 {
     chips = 1000;
-    userScore = 0;
+    
 }
 
 
@@ -73,14 +74,6 @@ void blackjackPlayer::setScore(){
 
 
 
-// int User::getScore() {
-//     return userScore;
-// }
-
-// void User::setScore() {
-//     userScore = count();
-//     this->score = userScore;
-// }
 
 void User::toStr()
 {
@@ -97,19 +90,10 @@ void User::toStr()
 
 
 
-
 Dealer::Dealer() {
-    dealerScore = 0;
+    
 }
 
-// int Dealer::getScore() {
-//     return dealerScore;
-// }
-
-// void Dealer::setScore() {
-//     dealerScore = count();
-//     this->score = dealerScore;
-// }
 
 
 // make sure its only 1
@@ -174,5 +158,5 @@ void blackjackPlayer::printCard(Card& card)
         suit = "♠";
     }
 
-    std::cout<< "_______\n|" << suit << "    |\n|     |\n|  " << value << "  |\n|     |\n|    " << suit << "|\n──────";
+    std::cout<< "\n_______\n|" << suit << "    |\n|     |\n|  " << value << "  |\n|     |\n|    " << suit << "|\n──────";
 }

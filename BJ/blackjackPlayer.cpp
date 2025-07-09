@@ -119,7 +119,7 @@ void blackjackPlayer::printCard(Card& card)
         suit = "♠";
     }
 
-    std::cout<< "______\n|" << suit << "    |\n|     |\n|  " << value << "  |\n|     |\n|    " << suit << "|\n─────";
+    std::cout<< "_______\n|" << suit << "    |\n|     |\n|  " << value << "  |\n|     |\n|    " << suit << "|\n──────";
 }
 
 
@@ -153,6 +153,8 @@ void Dealer::toStr()
     for (Card& c : hand)
     {
         std::cout << c.name << " of " << c.suit << " | ";
+        printCard(c);
+        std::cout << std::endl;
     }
     std::cout << std::endl << std::endl;
 }

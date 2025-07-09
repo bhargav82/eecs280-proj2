@@ -8,7 +8,7 @@ class Table{
 public:
     Table();
 
-    void printBlackjackMenu();
+    
     void dealCardToPlayer();
     void dealCardToDealer();
     bool hitOrStand();

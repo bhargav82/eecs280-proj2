@@ -15,6 +15,12 @@ public:
 	int play(const Player&) override;
 	void resetGame() override;
 
+    Blackjack();
+
+	Table blackjackTable;
+    
+	void printBlackjackMenu();
+
     ~Blackjack();
 
 private:

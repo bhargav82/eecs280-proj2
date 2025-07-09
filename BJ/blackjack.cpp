@@ -2,25 +2,68 @@
 #include <chrono>
 #include <thread>
 
-// SHOULD REALLY BE BLACKJACK::PLAY
-int main()
+
+// initialize a new table, should only be one table when the game starts, even for multiple games
+Blackjack::Blackjack()
 {
-    // Takes in three unshuffled decks, shuffles them, and puts them in one shoe
-    Table t1;
-    
-    // Prints a banner explaining some of the core rules of Blackjack and announcing the deal
-    t1.printBlackjackMenu();
+                      
+}
+
+
+// REQUIRES: nothing
+// MODIFIES: cout
+// EFFECTS: prints a menu explaining some of the basic rules of Blackjack, should only be called once, not when the retry game
+void Blackjack::printBlackjackMenu()
+{
+    std::cout << "----------------------------------------------------" << std::endl;
+    std::cout << "Welcome to Blackjack! Here are the rules of the game." << std::endl;
+    std::cout << "----------------------------------------------------" << std::endl;
+    std::cout << "~ At the beginning of each hand, you will be asked" << std::endl;
+    std::cout << "    to provide a wager of points. This will be " << std::endl;
+    std::cout << "  how your score is evaluated on the leaderboard." << std::endl << std::endl;
+    std::cout << "~ Your objective is to get as close to a score of 21" << std::endl;
+    std::cout << "  as possible without going over by drawing cards." << std::endl << std::endl;
+    std::cout << "~ The dealer and the player will both start with two " << std::endl;
+    std::cout << "  cards. After the player decides to stand, the" << std::endl;
+    std::cout << "    dealer will attempt to beat the player."   << std::endl << std::endl;
+    std::cout << "~ The dealer will hit on 16 and stand on 17. If" << std::endl;
+    std::cout << "  the dealer goes over 21, the player will win."         << std::endl << std::endl;
+    std::cout << "          ** Good luck, and have fun!! **           " << std::endl;
+    std::cout << "----------------------------------------------------" << std::endl;
+}
+
+void Blackjack::drawBoard()
+{
     std::cout << "<><><><><><><><><><><><><><><><><><><><><><><><><><>" << std::endl;
     std::cout << "<>  Dealing two cards to both you and the dealer  <>" << std::endl;
     std::cout << "<><><><><><><><><><><><><><><><><><><><><><><><><><>" << std::endl;
     std::cout << "----------------------------------------------------" << std::endl << std::endl;
 
+
+    std::cout << "################################" << std::endl;
+    std::cout << "Your current chips balance: " << blackjackTable.player.getChips() << std::endl;
+    std::cout << "################################" << std::endl << std::endl;
+}
+// SHOULD REALLY BE BLACKJACK::PLAY
+
+int Blackjack::play(const Player&)
+{
+    this->printBlackjackMenu();                                                       // only call this once
+
+    this->drawBoard();
+
+    
+
+}
+int main()
+{
+    // Takes in three unshuffled decks, shuffles them, and puts them in one shoe
+    Table t1;
+   
+
     std::string tempWager;
     int wager = 0;
 
-    std::cout << "################################" << std::endl;
-    std::cout << "Your current chips balance: " << t1.player.getChips() << std::endl;
-    std::cout << "################################" << std::endl << std::endl;
     
     std::cout << "$$$ Enter your wager (number of chips) $$$ : ";
     bool invalidInput = true;

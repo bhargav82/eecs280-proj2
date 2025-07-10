@@ -41,6 +41,14 @@ public:
 
     Card* getShoe();
 
+    int getCapacity();
+
+    // REQUIRES: 
+    // MODIFIES: resets capacity to max_cap, since cards were never deleted, they are still in array memory
+    // EFFECTS: allows one array to hold shoe, call when capacity < 50% in blackjack game
+    void resetShoe();
+
+
 
 private:
     static const int MAX_CAP = 156;

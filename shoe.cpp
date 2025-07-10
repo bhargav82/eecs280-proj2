@@ -110,9 +110,20 @@ void Shoe::toStr()
 }
 
 
+void Shoe::resetShoe(){
+    capacity = MAX_CAP;
+}
+
+
+int Shoe::getCapacity(){
+    return capacity;
+}
+
 Shoe::~Shoe()
 {
     std::cout << "Destructor called." << std::endl;
 }
+
+
 
 

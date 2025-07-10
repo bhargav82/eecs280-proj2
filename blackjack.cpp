@@ -40,12 +40,23 @@ void Blackjack::getWager() {
 
 int Blackjack::play(const Player& p)
 {
-    // Prints the menu explaining key rules
-    this->printBlackjackMenu();                                                       // only call this once
+    // Prints the menu explaining key rules, call once at beginning of game
+    this->printBlackjackMenu();                                                       
+
     while (userPlayAgain){
         this->singlePlay(p);
         this->resetGame();
         this->player.setChips(this->wager);
+
+
+        // should check if we need to reset shoe and reshuffle
+
+        if (this->shoeOfCardsOnTable.getCapacity() < 50)
+        {
+            this->shoeOfCardsOnTable.resetShoe();
+            this->shoeOfCardsOnTable.shuffle();
+            
+        }
     }
 
     return 0;
@@ -135,7 +146,7 @@ void Blackjack::playerHit()
 
 void Blackjack::dealerHit() 
 {
-    std::cout << "Dealer hits!" << std::endl << std::endl;
+    std::cout << "\n\nDealer hits!" << std::endl << std::endl;
     this->dealCardToDealer();
     this->dealer.setScore();
     std::cout << std::endl;

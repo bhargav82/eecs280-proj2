@@ -11,12 +11,14 @@ public:
     ~Hand();
 
     void addCard(Card &c);
-    void clearHand(Card &c);
+    void clearHand();
 
     int getSize();
     int getCapacity();
 
     void resize();
+    
+    Card atIndex(int index);
 
 
 private:

@@ -27,6 +27,15 @@ public:
     bool checkGuess(char c, std::set<char> guessedLetters);
     std::set<char> findUniqueLetters(std::string& keyword);
 
+    void sortScoreLowToHigh();
+	void writeToFile();
+
+
+	std::vector<std::pair<std::string, int>> highScores; 
+	std::vector<std::pair<std::string, int>> readHighScores(const std::string filename);
+
+    void updateScoreboard();
+
     void printHangmanWord(std::string keyword, std::set<char> lettersGuessed);
     void printHangmanGraphic(int strikeCount);
     void correctAndIncorrectGuesses(char userInputLetter, std::set<char>& alreadyGuessedLetters);

@@ -24,12 +24,15 @@ private: // these variables and functions are only available to class members (a
 	void updateScoreboard();
 	void askPlayAgain();
 
+
+
 public: // these functions (usually not variables) are available to anyone
 // default constructor
 	Guess( );
 	virtual ~Guess() override;
 
-	virtual void sortScoreHighToLow();
+	void sortScoreLowToHigh();
+	void writeToFile();
 	virtual void resetGame( ) override;
 	virtual void drawBoard() override;
 	virtual void getInput() override;

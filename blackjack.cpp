@@ -172,8 +172,8 @@ void Blackjack::resetGame()
     this->player.score = 0;
     this->dealer.score = 0;
 
-    this->player.hand.clear();
-    this->dealer.hand.clear();
+    this->player.handOfCards.clearHand();
+    this->dealer.handOfCards.clearHand();
 
     this->userHitChoice = true;
     this->userBust = false;
@@ -187,16 +187,17 @@ Blackjack::~Blackjack(){
 
 char Blackjack::checkWinner()
 {
-    if (this->player.score > this->dealer.score && !userBust && this->dealer.score < 21)                      // user wins
+    if (!userBust && ((this->player.score > this->dealer.score) || (this->dealer.score > 21)))                      // user wins
     {
         return 'u'; 
     }
-    else if (this->player.score == this->dealer.score) {                // push (tie)
+    
+    else if ((this->player.score == this->dealer.score) && !userBust) {                                             // push (tie)
         this->wager = 0;
         return 'p';
        
     }
-    else {                                                              // dealer wins
+    else {                                                                                                           // dealer wins
         this->wager = this->wager * -1;
         return 'd';
     }

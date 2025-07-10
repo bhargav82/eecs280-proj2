@@ -18,21 +18,23 @@ bool blackjackPlayer::scoreEqualsBlackjack()
 // will push back to the hand, can  change based on who is playing
 void blackjackPlayer::addCard(Card& c)
 {
-    hand.push_back(c);
+    handOfCards.addCard(c);
+    
 }
 
 int blackjackPlayer::count() {
     int handValue = 0;
     bool hasAce = false;
 
-    for (size_t i = 0; i < hand.size(); i++) 
+    for (size_t i = 0; i < handOfCards.getSize(); i++) 
     {
-        if (hand[i].name == "Ace") 
+        
+        if (handOfCards.atIndex(i).name == "Ace") 
         {
             hasAce = true;
             
         }
-        handValue += hand[i].value;
+        handValue += handOfCards.atIndex(i).value;
     }
 
     if (hasAce && handValue < 12) 
@@ -74,13 +76,17 @@ void blackjackPlayer::setScore(){
 void User::toStr()
 {
     std::cout << "Your hand: ";
-    for (Card& c : hand)
+    for (int i = 0; i < handOfCards.getSize(); i++)
     {
-        std::cout << "| " << c.name << " of " << c.suit << " | ";
+        std::cout << "| " << handOfCards.atIndex(i).name << " of " << handOfCards.atIndex(i).suit << " |";
     }
+    
     std::cout << std::endl << std::endl;
 
-    for (Card& c : hand) {
+
+    for (int i = 0; i < handOfCards.getSize(); i++)
+    {
+        Card c = handOfCards.atIndex(i);
         printCard(c);
         std::cout << std::endl;
     }
@@ -100,13 +106,17 @@ Dealer::Dealer() {
 void Dealer::toStr()
 {
     std::cout << "Dealer's hand: ";
-    for (Card& c : hand)
+    for (int i = 0; i < handOfCards.getSize(); i++)
     {
-        std::cout << "| " << c.name << " of " << c.suit << " | ";
+        std::cout << "| " << handOfCards.atIndex(i).name << " of " << handOfCards.atIndex(i).suit << " |";
     }
+    
     std::cout << std::endl << std::endl;
 
-    for (Card& c : hand) {
+
+    for (int i = 0; i < handOfCards.getSize(); i++)
+    {
+        Card c = handOfCards.atIndex(i);
         printCard(c);
         std::cout << std::endl;
     }

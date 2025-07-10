@@ -1,6 +1,7 @@
 // here you can import more things. import everything needed for the implementation of this class.
 #include "guess.hpp"		// the class definition
 #include "consoledraw.hpp"	// stuff to help with writing to the console
+#include "highscore.hpp"
 
 // some generally helpful libraries
 #include <cstdlib>
@@ -9,6 +10,7 @@
 #include <iostream>
 #include <random>
 #include <fstream>
+
 // default constructor
 Guess::Guess( ) : Game()
 {
@@ -18,23 +20,12 @@ Guess::Guess( ) : Game()
 	// read the old scoreboard file here
 	// populate the game's scoreboard object
 	
-	const std::string filename = "guessHighScore.txt";
+	static const std::string filename = "guessHighScore.txt";
 	this->highScores = readHighScores(filename);
-	sortScoreHighToLow();
-	Player playersArray[10];
-	
+	sortScoreLowToHigh();
 
-	for (auto l = 0; l < highScores.size(); ++l) {
-		const std::string tempName = highScores[l].first;
-		Player tempPlayer(tempName);
-		//playersArray[l] = Player(tempName);
-	}
 	
-
-	for (auto player : highScores)
-	{
-		std::cout << player.first << " " << player.second << std::endl;
-	}
+	
 
 }
 
@@ -160,61 +151,96 @@ std::vector<std::pair<std::string, int>> Guess::readHighScores(const std::string
 // needs to be implemented as part of the first task
 bool Guess::addScore( HighScore* newScore )
 {
-
-	/*
-	1. go through highscores member variables, find max
-	2. check if newScore.score is smaller than max
-	3. if smaller than max, replace max with newScore (can reorder later), return true
-	4. if not smaller, return false
-
-	*/
-
-	int max = (this->highScores).at(0).second;
-	int stringPosition = 0;
-
-	for (size_t i=0; i < highScores.size(); i++)
+	
+	bool addNewScore = false;
+	int indexToChange = 0;
+	int tempVal = 0;
+	std::string tempName = "";
+	int tempVal2 = 0;
+	std::string tempName2 = "";
+	
+	for (int i = 0; i < static_cast<int>(highScores.size()); i++)
 	{
-		if (max < highScores.at(i).second)
+		// needs to take this place and move everything down;
+		if (newScore->getScore() < highScores.at(i).second)
 		{
-			max = highScores.at(i).second;
-			stringPosition = i;																// finds the string positon of the current max (worst) score
+			addNewScore = true;
+			indexToChange = i;
+
+			tempVal = highScores.at(i).second;
+			tempName = highScores.at(i).first;
+
+			highScores.at(i).second = newScore->getScore();
+			highScores.at(i).first = newScore->getName();
+			break;
 		}
 	}
 
-
-	// if the newScore is better (less) than the worst (max) HighScore, then replace and return true
-	if(max > newScore->getScore())
+	if (addNewScore)
 	{
-		   highScores.at(stringPosition).first = newScore->getName();
-		   highScores.at(stringPosition).second = newScore->getScore();
-		   return true;
+		for (int j = indexToChange + 1; j < static_cast<int>(highScores.size()); j++)
+		{
+			tempVal2 = highScores.at(j).second;
+			tempName2 = highScores.at(j).first;
+
+			highScores.at(j).second = tempVal;
+			highScores.at(j).first = tempName;
+
+			tempVal = tempVal2;
+			tempName = tempName2;
+		}
+		updateScoreboard();
+		writeToFile();
 	}
+
+
 	
-	
-	return false;
+	return addNewScore;
+}
+
+void Guess::writeToFile()
+{
+	std::ofstream outputFile("guessHighScore.txt");
+	if (outputFile.is_open())
+	{
+		for (HighScore* h : top10list)
+		{
+			outputFile << h->getName() << ", " << h->getScore() << std::endl;
+		}
+	}
+	outputFile.close();
+}
+
+void Guess::updateScoreboard()
+{
+	for (int i = 0; i<10; i++)
+	{
+		
+		delete top10list[i];
+
+		top10list[i] = new HighScore(highScores.at(i).first, highScores.at(i).second);
+		
+	}
 }
 
 
 // sorts top 10 by score puts into top10list
-void Guess::sortScoreHighToLow() {
-	int val1 = highScores[0].second;
-	int tempVal = 0;
-	std::string tempName = "";
+void Guess::sortScoreLowToHigh() {
 
-	for (auto i = 1; i < highScores.size(); ++i) {
-		if (highScores[i].second < val1) {
-			tempVal = highScores[i - 1].second;
-			tempName = highScores[i - 1].first;
-			
-			highScores[i - 1].first = highScores[i].first;
-			highScores[i - 1].second = highScores[i].second;
+	for (size_t i = 0; i<highScores.size(); i++){
+		for (size_t j = 0; j< highScores.size() -i -1; j++)
+		{
+			if (highScores.at(j).second > highScores.at(j+1).second)
+			{
+				int tempVal = highScores.at(j).second;
+				std::string tempName = highScores.at(j).first;
 
-			highScores[i].second = tempVal;
-			highScores[i].first = tempName;
-		}
+				highScores.at(j).second = highScores.at(j+1).second;
+				highScores.at(j).first = highScores.at(j+1).first;
 
-		if (i < highScores.size() - 1) {
-			val1 = highScores[i].second;
+				highScores.at(j+1).second = tempVal;
+				highScores.at(j+1).first = tempName;
+			}
 		}
 	}
 
@@ -281,6 +307,11 @@ int Guess::play( const Player& player )
 		  << " guesses!"
 		  << std::endl
 	;
+
+	HighScore playerScore(player, num_guesses);
+	HighScore* playerScorePtr = &playerScore;
+
+	addScore(playerScorePtr);
 
 	return 0;
 }

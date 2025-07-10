@@ -1,5 +1,6 @@
 #include "hangman.hpp"
 #include <fstream>
+#include <sstream>
 #include <random>
 
 
@@ -16,9 +17,14 @@ Hangman::Hangman() : Game()
 
     std::set<char> wordUniqueLetters = findUniqueLetters(keyword);
     unique_letters = wordUniqueLetters;
+
+    this->highScores = readHighScores("hangmanHighscores.txt");
+
+	sortScoreLowToHigh();
+    updateScoreboard();
 }
 
-int Hangman::play(const Player&) 
+int Hangman::play(const Player& p) 
 {
     drawBoard();
     size_t uniqueLettersSize = unique_letters.size(); 
@@ -30,6 +36,8 @@ int Hangman::play(const Player&)
             std::cout << "||   Good job! You correctly guessed the hidden   ||" << std::endl;
             std::cout << "            word with only " << strikeCounter << " mistake(s)." << std::endl;
             std::cout << "----------------------------------------------------" << std::endl;
+            HighScore* newScore = new HighScore(p.getName(), strikeCounter);
+            addScore(newScore);
             break;
         }
 
@@ -120,10 +128,7 @@ bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
 }
 
 
-bool Hangman::addScore( HighScore* newScore )
-{
-        return true;
-}
+
 
 void Hangman::resetGame() {
     this->keyword = randomWordGenerator(createWordList("wordList.txt"));
@@ -350,7 +355,145 @@ void Hangman::wordToLower(std::string& word)
 
 }
 
+
+
 Hangman::~Hangman()
 {
     std::cout << "Hangman Destructor." << std::endl;
+}
+
+
+
+
+std::vector<std::pair<std::string, int>> Hangman::readHighScores(const std::string filename)
+{
+	std::ifstream file;
+    file.open(filename);
+
+    if ( !file.is_open() )
+    {
+        throw std::runtime_error("File could not be opened.");
+    }
+
+	std::string line;
+
+    while (std::getline(file, line))
+    {
+		std::pair<std::string, int> currentPlayerInfo;
+
+		std::stringstream ss(line);
+		std::string name;
+		std::string score;
+		
+		std::getline(ss, name, ',');
+		currentPlayerInfo.first = name;
+
+		std::getline(ss, score);
+		currentPlayerInfo.second = stoi(score);
+
+		highScores.push_back(currentPlayerInfo);
+    }
+
+    file.close();
+	return highScores;
+
+}
+
+
+
+// sorts top 10 by score puts into top10list
+void Hangman::sortScoreLowToHigh() {
+
+	for (size_t i = 0; i<highScores.size(); i++){
+		for (size_t j = 0; j< highScores.size() -i -1; j++)
+		{
+			if (highScores.at(j).second > highScores.at(j+1).second)
+			{
+				int tempVal = highScores.at(j).second;
+				std::string tempName = highScores.at(j).first;
+
+				highScores.at(j).second = highScores.at(j+1).second;
+				highScores.at(j).first = highScores.at(j+1).first;
+
+				highScores.at(j+1).second = tempVal;
+				highScores.at(j+1).first = tempName;
+			}
+		}
+	}
+
+	return;
+}
+
+bool Hangman::addScore( HighScore* newScore )
+{
+	
+	bool addNewScore = false;
+	int indexToChange = 0;
+	int tempVal = 0;
+	std::string tempName = "";
+	int tempVal2 = 0;
+	std::string tempName2 = "";
+	
+	for (int i = 0; i < static_cast<int>(highScores.size()); i++)
+	{
+		// needs to take this place and move everything down;
+		if (newScore->getScore() < highScores.at(i).second)
+		{
+			addNewScore = true;
+			indexToChange = i;
+
+			tempVal = highScores.at(i).second;
+			tempName = highScores.at(i).first;
+
+			highScores.at(i).second = newScore->getScore();
+			highScores.at(i).first = newScore->getName();
+			break;
+		}
+	}
+
+	if (addNewScore)
+	{
+		for (int j = indexToChange + 1; j < static_cast<int>(highScores.size()); j++)
+		{
+			tempVal2 = highScores.at(j).second;
+			tempName2 = highScores.at(j).first;
+
+			highScores.at(j).second = tempVal;
+			highScores.at(j).first = tempName;
+
+			tempVal = tempVal2;
+			tempName = tempName2;
+		}
+		updateScoreboard();
+		writeToFile();
+	}
+
+
+	
+	return addNewScore;
+}
+
+void Hangman::writeToFile()
+{
+	std::ofstream outputFile("hangmanHighscores.txt");
+	if (outputFile.is_open())
+	{
+		for (HighScore* h : top10list)
+		{
+			outputFile << h->getName() << ", " << h->getScore() << std::endl;
+		}
+	}
+    outputFile.close();
+}
+
+void Hangman::updateScoreboard()
+{
+	for (int i = 0; i<10; i++)
+	{
+		
+		delete top10list[i];
+
+		top10list[i] = new HighScore(highScores.at(i).first, highScores.at(i).second);
+		
+	}
 }

@@ -2,6 +2,7 @@
 #include <string>
 #include "card.hpp"
 #include "shoe.hpp"
+#include "hand.hpp"
 
 class blackjackPlayer 
 {
@@ -17,7 +18,9 @@ class blackjackPlayer
         
         int score = 0;
         bool scoreEqualsBlackjack();                                       
-        std::vector<Card> hand;                                               // becomes public later, dealer and user will have their own hand
+        
+        // structure that hold card, allows for addCard and resetCard after each hand 
+        Hand handOfCards;
 
 };
 

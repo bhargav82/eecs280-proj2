@@ -3,7 +3,7 @@
 
 HighScore::HighScore()
 {
-	this->score = 0;
+	this->score = 9999;
 }
 
 HighScore::HighScore( Player _p, int _score) : p(_p), score(_score)

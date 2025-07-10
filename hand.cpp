@@ -46,7 +46,7 @@ void Hand::resize()
 
 
 // call after each single play is over
-void Hand::clearHand(Card &c){
+void Hand::clearHand(){
     size = 0;                                       // capacity should normally stay between 2-8 cards, so don't need to update capacity, can keep old array
 
     if (capacity > 20)
@@ -67,4 +67,11 @@ int Hand::getSize()
 
 int Hand::getCapacity(){
     return capacity;
+}
+
+
+Card Hand::atIndex(int counter)
+{
+   return cardsOfHand[counter];
+
 }

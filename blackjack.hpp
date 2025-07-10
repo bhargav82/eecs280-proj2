@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "card.hpp"
 #include "blackjackPlayer.hpp"
+#include "hand.hpp"
 
 
 

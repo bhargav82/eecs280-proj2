@@ -3,9 +3,7 @@
 
 
 
-// you need a variable called score that keeps track of whoever has the current hand, 
-//look at addCard it works for both players cause it has a variable (hand), hand is used by both
-
+// inherited by both players, so can check if either perosn has blackjack
 bool blackjackPlayer::scoreEqualsBlackjack()
 {
     if(this->score == 21){
@@ -15,12 +13,13 @@ bool blackjackPlayer::scoreEqualsBlackjack()
 }
 
 
-// will push back to the hand, can  change based on who is playing
+// will push back to the hand, can change based on who is playing
 void blackjackPlayer::addCard(Card& c)
 {
     handOfCards.addCard(c);
     
 }
+
 
 int blackjackPlayer::count() {
     int handValue = 0;
@@ -37,7 +36,7 @@ int blackjackPlayer::count() {
         handValue += handOfCards.atIndex(i).value;
     }
 
-    if (hasAce && handValue < 12) 
+    if (hasAce && handValue < 12)                   // counts Ace as 11 instead of default 1
     {
         handValue += 10;
         

@@ -1,5 +1,3 @@
-// Ask if having these functions defined in the .hpp is okay tomorrow
-// Clarify if enum and suitToString/nameToString should be in here
 #pragma once 
 #include <iostream>
 #include <string>
@@ -8,21 +6,44 @@
 
 class Card{
 public:
+
+    // REQUIRES: nothing
+    // MODIFIES: creates blank card object with default parameters 
+    // EFFECTS: nothing
     Card();
+
+    // REQUIRES: nothing
+    // MODIFIES: creates card object with parameters, converts int type to correct string using ENUM
+    // EFFECTS: nothing
     Card(int s, int n, int v);
 
     std::string suit;
     std::string name;
     int value;
 
+
+    // REQUIRES: int for suit
+    // MODIFIES: nothing
+    // EFFECTS: returns an int for a suit, using ENUM
     std::string suitToString (int suit);
+
+    // REQUIRES: int for name
+    // MODIFIES: nothing
+    // EFFECTS: changes int to name using ENUM
     std::string nameToString(int name);
   
 };
 
+
+
+// 52 Card objects with different values and suits
 class Deck {
-    // 52 Card objects with different values and suits
+
 public:
+
+    // REQUIRES: nothing
+    // MODIFIES: creates a card object, makes a full 52 card deck
+    // EFFECTS: appends each card into deck, making a full deck vector
     Deck() {
 
     for (int cardSuit = 0; cardSuit < 4; cardSuit++)

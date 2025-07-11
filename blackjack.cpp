@@ -29,8 +29,17 @@ void Blackjack::getWager() {
         try 
         {
             // Attempts to set the given wager amount to an integer
-            wager = std::stoi(tempWager);
-            invalidInput = false;
+
+                
+                wager = std::stoi(tempWager);
+                if ((wager > this->player.getChips()) || (wager < 0))
+                {
+                    std::cout << "You did not input a valid wager amount. Please try again." << std::endl;
+                    invalidInput = true;
+                }
+                else{
+                    invalidInput = false;
+                }   
         }
         catch (std::invalid_argument &error)
         {
@@ -38,6 +47,8 @@ void Blackjack::getWager() {
             std::cout << "Please enter a number: ";
         }
     }
+
+ 
 
     std::cout << std::endl;
 
@@ -65,6 +76,12 @@ int Blackjack::play(const Player& p)
             this->shoeOfCardsOnTable.shuffle();
             
         }
+
+        if (this->player.getChips() <= 0)
+        {
+            std::cout << "You have no money left. GO TO THE ATM." << std::endl << std::endl;
+            this->userPlayAgain = false;
+        }
     }
 
     return 0;
@@ -76,6 +93,7 @@ int Blackjack::singlePlay(const Player&)
 {
     // Deals two cards to both the dealer and the player
     this->dealCardToDealer();
+    
     this->dealCardToPlayer();
     this->dealCardToPlayer();
 
@@ -136,19 +154,24 @@ int Blackjack::singlePlay(const Player&)
 // Function that handles the player choosing to hit
 void Blackjack::playerHit() 
 {
+    // Takes in input from the user and runs the inner loop if the player hits
     this->getInput();
     if (this->userHitChoice) 
     {
+        // Deals card to player and updates their score
         this->dealCardToPlayer();
 
         this->player.setScore();
         std::cout << std::endl;
         this->player.toStr();
         
+        // If the player busts, notifies the user and sets userBust to true
         if (this->player.getScore() > 21) {
             std::cout << "You bust with a score of " << this->player.getScore() << "!" << std::endl;
             this->userBust = true;
         }
+
+        // If the player did not bust, updates them on their score
         else 
         {
             std::cout << std::endl;
@@ -160,27 +183,34 @@ void Blackjack::playerHit()
 
 void Blackjack::dealerHit() 
 {
+    // Tells the user the dealer hit, deals the dealer a card, updates the score, and prints out the dealer's hand
     std::cout << "\n\nDealer hits!" << std::endl << std::endl;
     this->dealCardToDealer();
     this->dealer.setScore();
     std::cout << std::endl;
     this->dealer.toStr();
+
+    // If the dealer busts, alerts the player and shows the dealer's score
     if (this->dealer.getScore() > 21) {
         std::cout << "Dealer bust with a score of " << this->dealer.getScore() << "!" << std::endl;
     }
+
+    // If the dealer does not bust, updates the user to the dealer's score
     else {
         std::cout << std::endl;
         std::cout << "Dealer's current score: " << this->dealer.getScore() << std::endl << std::endl;
+        // Adds a buffer so the dealer does not "turbo hit"
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 }
 
+// Adds player's score to the Blackjack leaderboard if it is a top ten placement
 bool Blackjack::addScore( HighScore* newScore )
 {
     return false;
 }
 
-
+// Resets elements of Blackjack game that have been changed back to their initial states
 void Blackjack::resetGame()
 {
     this->player.score = 0;
@@ -194,23 +224,27 @@ void Blackjack::resetGame()
 
 }
 
+// Destructor for Blackjack
 Blackjack::~Blackjack(){
 
 }
 
-
+// Checks to see who won the game of Blackjack
 char Blackjack::checkWinner()
 {
+    // Determines if the player won
     if (!userBust && ((this->player.score > this->dealer.score) || (this->dealer.score > 21)))                      // user wins
     {
         return 'u'; 
     }
     
+    // If the player and user did not bust and have the same score, push
     else if ((this->player.score == this->dealer.score) && !userBust) {                                             // push (tie)
         this->wager = 0;
         return 'p';
        
     }
+    // Otherwise, must be a dealer win
     else {                                                                                                           // dealer wins
         this->wager = this->wager * -1;
         return 'd';
@@ -218,6 +252,7 @@ char Blackjack::checkWinner()
     
 }
 
+// Displays a short message denoting the winner of the game
 void Blackjack::printWinner(char letter)
 {
     if (letter == 'u')
@@ -234,45 +269,37 @@ void Blackjack::printWinner(char letter)
 
 }
 
-
+// Takes a card out of the shoe and adds it to the player's hand
 void Blackjack::dealCardToPlayer() {
     Card p = shoeOfCardsOnTable.playCard();
     player.addCard(p);
 
-
     return;
 }
 
-
+// Takes a card out of the shoe and adds it to the dealer's hand
 void Blackjack::dealCardToDealer() {
-
     Card newCard = shoeOfCardsOnTable.playCard();
     dealer.addCard(newCard);
 
     return;
 }
 
-// REQUIRES: nothing
-// MODIFIES: cin
-// EFFECTS: takes in choice from user on whether or not they want to hit, returns true if so, false if stand
 void Blackjack::getInput() {
     char userChoice = 'q';
     
+    // Until the user chooses to hit or stand, asks the user if they would like to hit or stand
     while ((userChoice != 's') && (userChoice != 'h') && (userChoice != 'S') && (userChoice != 'H')) {
         std::cout << "Would you like to hit (h) or stand (s)?" << std::endl;
         std::cout << "Your choice: ";
         std::cin >> userChoice;
     }
 
+    // Sets the userHitChoice bool to true if they decide to hit
     this->userHitChoice = (userChoice == 'h' || userChoice == 'H');
     
 }
 
-
-
-// REQUIRES: nothing
-// MODIFIES: cout
-// EFFECTS: prints a menu explaining some of the basic rules of Blackjack, should only be called once, not when the retry game
 void Blackjack::printBlackjackMenu()
 {
     std::cout << "----------------------------------------------------" << std::endl;

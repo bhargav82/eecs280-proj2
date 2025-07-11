@@ -211,14 +211,18 @@ void Guess::writeToFile()
 	outputFile.close();
 }
 
+
+
 void Guess::updateScoreboard()
 {
 	for (int i = 0; i<10; i++)
 	{
 		
 		delete top10list[i];
+		top10list[i] = nullptr;
 
 		top10list[i] = new HighScore(highScores.at(i).first, highScores.at(i).second);
+
 		
 	}
 }

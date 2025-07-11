@@ -38,6 +38,8 @@ enum intToName {
     King = 13,
 };
 
+
+// uses enum to create correct suit
 std::string Card::suitToString (int suit) {
     switch(suit)
     {
@@ -50,6 +52,7 @@ std::string Card::suitToString (int suit) {
     }
 }
 
+// uses enum to make correct rank
 std::string Card::nameToString(int name) {
     switch(name) {
         case Ace: return "Ace";

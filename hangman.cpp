@@ -492,7 +492,8 @@ void Hangman::updateScoreboard()
 	{
 		
 		delete top10list[i];
-
+        top10list[i] = nullptr;
+        
 		top10list[i] = new HighScore(highScores.at(i).first, highScores.at(i).second);
 		
 	}

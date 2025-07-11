@@ -19,7 +19,7 @@ Hand::~Hand()
 
 void Hand::addCard(Card &c)
 {
-    if (size == capacity)
+    if (size == capacity)                   // if theres no space
     {
         resize();
     }
@@ -53,7 +53,7 @@ void Hand::clearHand(){
     {
         capacity = 2;
         delete [] cardsOfHand;
-        cardsOfHand = new Card[capacity];         // in cases of capacity growing very large (playing a ton of hands), then create a new array
+        cardsOfHand = new Card[capacity];         // in cases of capacity growing very large (1 hand keeps adding cards), then create a new array
     }
 }
 

@@ -3,16 +3,22 @@
 #include <thread>
 
 
-// initialize a new table, should only be one table when the game starts, even for multiple games 
+// Default constructor for Blackjack, inherits from game
 Blackjack::Blackjack() : Game()
 {
+    // When a new game of Blackjack starts, shuffles the deck
     shoeOfCardsOnTable.shuffle();
+
+    // Reads in junk characters from the stream before the user is prompted to enter their wager
     std::cin.clear();     
     std::cin.ignore();              
 }
     
 void Blackjack::getWager() {
+    // Prompts the user for a wager
     std::cout << "$$$ Enter your wager (number of chips) $$$ : ";
+
+    // Attempts to read in the value given and set wager until the user gives a valid wager
     std::string tempWager = "";
     bool invalidInput = true;
     while (invalidInput)
@@ -22,12 +28,13 @@ void Blackjack::getWager() {
         
         try 
         {
-            
+            // Attempts to set the given wager amount to an integer
             wager = std::stoi(tempWager);
             invalidInput = false;
         }
         catch (std::invalid_argument &error)
         {
+            // If the user gives invalid input, prompts again for a number
             std::cout << "Please enter a number: ";
         }
     }
@@ -43,14 +50,15 @@ int Blackjack::play(const Player& p)
     // Prints the menu explaining key rules, call once at beginning of game
     this->printBlackjackMenu();                                                       
 
+    // Plays the game of Blackjack each time the user indicates they wish to continue
     while (userPlayAgain){
+        // Plays the game of Blackjack once, then resets the game and updates the player's chip balance
         this->singlePlay(p);
         this->resetGame();
         this->player.setChips(this->wager);
 
 
-        // should check if we need to reset shoe and reshuffle
-
+        // checks if we need to reset shoe, repopulates and reshuffles if so
         if (this->shoeOfCardsOnTable.getCapacity() < 50)
         {
             this->shoeOfCardsOnTable.resetShoe();
@@ -68,7 +76,6 @@ int Blackjack::singlePlay(const Player&)
 {
     // Deals two cards to both the dealer and the player
     this->dealCardToDealer();
-    this->dealCardToDealer();
     this->dealCardToPlayer();
     this->dealCardToPlayer();
 
@@ -76,50 +83,57 @@ int Blackjack::singlePlay(const Player&)
     this->drawBoard();
     this->getWager();
 
+    // Sets the score of the dealer and the player
     this->player.setScore();
     this->dealer.setScore();
     
-    
+    // Prints out the score and hands of the dealer and player
     this->player.toStr();
     std::cout << std::endl;
     this->dealer.toStr();
     std::cout << std::endl;
 
+    // Prints a message declaring the current score
     std::cout << "Your current score: " << this->player.getScore() << std::endl;
     std::cout << "Dealer's current score: " << this->dealer.getScore() << std::endl << std::endl;
 
+    // Each time the user decides to hit, draws another card and updates score until they stand or bust
     while (this->userHitChoice && !this->userBust) 
     {
         this->playerHit();
     }
 
+    // Once the user has finished hitting, if they did not bust, the dealer hits up until 17
     while (this->dealer.getScore() < 17 && !userBust) 
     {
         this->dealerHit();
     }
 
+    // Determines the winner of the hand and prints out a short message congratulating the winner
     char winnerChar = 'x';
     winnerChar = this->checkWinner();
     this->printWinner(winnerChar);
 
+    // Asks the user if they would like to play again, takes in their choice
     char playAgainInput = 'x';
     std::cout << "Play again? (y/n): ";
     std::cin >> playAgainInput;
     
+    // Asks the user for their choice until they give a valid response
     while (playAgainInput != 'y' && playAgainInput != 'Y' &&
            playAgainInput != 'n' && playAgainInput != 'N') {
         std::cout << "Please enter 'y' or 'n'. Play again? (y/n): ";
         std::cin >> playAgainInput;
     }
-
     std::cout << std::endl << std::endl;
     
+    // Sets the userPlayAgain value to true if the user wants to play again
     userPlayAgain = (playAgainInput == 'Y' || playAgainInput == 'y');
      
     return 0;
 }
 
-
+// Function that handles the player choosing to hit
 void Blackjack::playerHit() 
 {
     this->getInput();
@@ -269,11 +283,17 @@ void Blackjack::printBlackjackMenu()
     std::cout << "  how your score is evaluated on the leaderboard." << std::endl << std::endl;
     std::cout << "~ Your objective is to get as close to a score of 21" << std::endl;
     std::cout << "  as possible without going over by drawing cards." << std::endl << std::endl;
-    std::cout << "~ The dealer and the player will both start with two " << std::endl;
-    std::cout << "  cards. After the player decides to stand, the" << std::endl;
-    std::cout << "    dealer will attempt to beat the player."   << std::endl << std::endl;
+    std::cout << "~ Once you no longer wish to keep drawing cards, " << std::endl;
+    std::cout << "  you can choose to 'stand,' which will set your " << std::endl;
+    std::cout << "  score for the round to the value of your hand" << std::endl << std::endl;
+    std::cout << "~ You will start with two cards drawn, and the " << std::endl;
+    std::cout << "  dealer will start with one. After you decide" << std::endl;
+    std::cout << "  to stand, the dealer will begin drawing cards." << std::endl << std::endl;
     std::cout << "~ The dealer will hit on 16 and stand on 17. If" << std::endl;
-    std::cout << "  the dealer goes over 21, the player will win."         << std::endl << std::endl;
+    std::cout << "  the dealer goes over 21, the player will win."         << std::endl;
+    std::cout << "  If neither you nor the dealer bust, the hand" << std::endl;
+    std::cout << "  with the higher score will win. If you have " << std::endl;
+    std::cout << "  the same score, you will regain your wager" << std::endl << std::endl;
     std::cout << "          ** Good luck, and have fun!! **           " << std::endl;
     std::cout << "----------------------------------------------------" << std::endl;
 }

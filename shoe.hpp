@@ -10,7 +10,7 @@ class Shoe {
 public:
 
     // REQUIRES: nothing
-    // MODIFIES: creates shoe data structure, takes in 3 decks, allows for removing from front
+    // MODIFIES: creates shoe data structure, takes in 3 decks,
     // EFFECTS: nothihg
     Shoe();
 
@@ -20,18 +20,19 @@ public:
     ~Shoe();
     
     // REQUIRES: nothing
-    // MODIFIES: finds top card, removes from Shoe
+    // MODIFIES: calls getTop, gets top card and "removes" from Shoe
     // EFFECTS: returns card to deal to player or dealer
     Card playCard();
 
     // REQUIRES: nothing
     // MODIFIES: nothing
-    // EFFECTS: returns top of card, if possible
+    // EFFECTS: returns top card of shoe, if possible
     Card getTop();
 
 
     // REQUIRES: nothing
-    // MODIFIES: iterates through     // EFFECTS: nothing
+    // MODIFIES: iterates through cards and prits them out    
+    // EFFECTS: nothing
     void toStr();
 
     // REQUIRES: nothing
@@ -39,8 +40,14 @@ public:
     // EFFECTS: shuffles the deck
     void shuffle();
 
+    // REQUIRES: nothing
+    // MODIFIES: nothing
+    // EFFECTS: returns pointer to array of shoe of cards
     Card* getShoe();
-
+    
+    // REQUIRES: nothing
+    // MODIFIES: nothing
+    // EFFECTS: returns the capacity
     int getCapacity();
 
     // REQUIRES: 

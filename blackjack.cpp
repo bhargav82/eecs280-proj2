@@ -1,6 +1,7 @@
 #include "blackjack.hpp"
 #include <chrono>
 #include <thread>
+#include <fstream>
 
 
 // Default constructor for Blackjack, inherits from game
@@ -11,51 +12,16 @@ Blackjack::Blackjack() : Game()
 
     // Reads in junk characters from the stream before the user is prompted to enter their wager
     std::cin.clear();     
-    std::cin.ignore();              
+    std::cin.ignore();   
+
+
+
+    this->highScores = this->readHighScores("blackjackHighscores.txt");
+
+	this->sortScoresHighToLow();
+    this->updateScoreboard();           
 }
-    
-void Blackjack::getWager() {
-    // Prompts the user for a wager
-    std::cout << "$$$ Enter your wager (number of chips) $$$ : ";
-
-    // Attempts to read in the value given and set wager until the user gives a valid wager
-    std::string tempWager = "";
-    bool invalidInput = true;
-    while (invalidInput)
-    {   
-        
-        std::getline(std::cin, tempWager);
-        
-        try 
-        {
-            // Attempts to set the given wager amount to an integer
-
-                
-                wager = std::stoi(tempWager);
-                if ((wager > this->player.getChips()) || (wager < 0))
-                {
-                    std::cout << "You did not input a valid wager amount. Please try again." << std::endl;
-                    invalidInput = true;
-                }
-                else{
-                    invalidInput = false;
-                }   
-        }
-        catch (std::invalid_argument &error)
-        {
-            // If the user gives invalid input, prompts again for a number
-            std::cout << "Please enter a number: ";
-        }
-    }
-
  
-
-    std::cout << std::endl;
-
-    return;
-}
-
-
 int Blackjack::play(const Player& p)
 {
     // Prints the menu explaining key rules, call once at beginning of game
@@ -83,6 +49,9 @@ int Blackjack::play(const Player& p)
             this->userPlayAgain = false;
         }
     }
+
+    HighScore* newScore = new HighScore(p.getName(), this->player.getChips());
+    this->addScore(newScore);
 
     return 0;
 }
@@ -181,6 +150,72 @@ void Blackjack::playerHit()
 
 }
 
+
+
+   
+void Blackjack::getWager() {
+    // Prompts the user for a wager
+    std::cout << "$$$ Enter your wager (number of chips) $$$ : ";
+
+    // Attempts to read in the value given and set wager until the user gives a valid wager
+    std::string tempWager = "";
+    bool invalidInput = true;
+    while (invalidInput)
+    {   
+        
+        std::getline(std::cin, tempWager);
+        
+        try 
+        {
+            // Attempts to set the given wager amount to an integer
+
+                
+                wager = std::stoi(tempWager);
+                if ((wager > this->player.getChips()) || (wager < 0))
+                {
+                    std::cout << "You did not input a valid wager amount. Please try again." << std::endl;
+                    invalidInput = true;
+                }
+                else{
+                    invalidInput = false;
+                }   
+        }
+        catch (std::invalid_argument &error)
+        {
+            // If the user gives invalid input, prompts again for a number
+            std::cout << "Please enter a number: ";
+        }
+    }
+
+ 
+
+    std::cout << std::endl;
+
+    return;
+}
+
+
+// Takes a card out of the shoe and adds it to the player's hand
+void Blackjack::dealCardToPlayer() {
+    Card p = shoeOfCardsOnTable.playCard();
+    player.addCard(p);
+
+    return;
+}
+
+
+// Takes a card out of the shoe and adds it to the dealer's hand
+void Blackjack::dealCardToDealer() {
+    Card newCard = shoeOfCardsOnTable.playCard();
+    dealer.addCard(newCard);
+
+    return;
+}
+
+
+
+
+
 void Blackjack::dealerHit() 
 {
     // Tells the user the dealer hit, deals the dealer a card, updates the score, and prints out the dealer's hand
@@ -204,11 +239,6 @@ void Blackjack::dealerHit()
     }
 }
 
-// Adds player's score to the Blackjack leaderboard if it is a top ten placement
-bool Blackjack::addScore( HighScore* newScore )
-{
-    return false;
-}
 
 // Resets elements of Blackjack game that have been changed back to their initial states
 void Blackjack::resetGame()
@@ -269,21 +299,7 @@ void Blackjack::printWinner(char letter)
 
 }
 
-// Takes a card out of the shoe and adds it to the player's hand
-void Blackjack::dealCardToPlayer() {
-    Card p = shoeOfCardsOnTable.playCard();
-    player.addCard(p);
 
-    return;
-}
-
-// Takes a card out of the shoe and adds it to the dealer's hand
-void Blackjack::dealCardToDealer() {
-    Card newCard = shoeOfCardsOnTable.playCard();
-    dealer.addCard(newCard);
-
-    return;
-}
 
 void Blackjack::getInput() {
     char userChoice = 'q';
@@ -336,4 +352,153 @@ void Blackjack::drawBoard()
     std::cout << "################################" << std::endl;
     std::cout << "Your current chips balance: " << this->player.getChips() << std::endl;
     std::cout << "################################" << std::endl << std::endl;
+}
+
+
+
+// Adds player's score to the Blackjack leaderboard if it is a top ten placement
+bool Blackjack::addScore( HighScore* newScore )
+{
+    	
+	bool addNewScore = false;
+	int indexToChange = 0;
+	int tempVal = 0;
+	std::string tempName = "";
+	int tempVal2 = 0;
+	std::string tempName2 = "";
+	
+	for (int i = 0; i < static_cast<int>(highScores.size()); i++)
+	{
+		// needs to take this place and move everything down;
+		if (newScore->getScore() > highScores.at(i).second)
+		{
+			addNewScore = true;
+			indexToChange = i;
+
+			tempVal = highScores.at(i).second;
+			tempName = highScores.at(i).first;
+
+			highScores.at(i).second = newScore->getScore();
+			highScores.at(i).first = newScore->getName();
+			break;
+		}
+	}
+
+	if (addNewScore)
+	{
+		for (int j = indexToChange + 1; j < static_cast<int>(highScores.size()); j++)
+		{
+			tempVal2 = highScores.at(j).second;
+			tempName2 = highScores.at(j).first;
+
+			highScores.at(j).second = tempVal;
+			highScores.at(j).first = tempName;
+
+			tempVal = tempVal2;
+			tempName = tempName2;
+		}
+		updateScoreboard();
+		writeToFile();
+	}
+
+
+	
+	return addNewScore;
+
+
+}
+
+
+
+void Blackjack::updateScoreboard()
+{
+	for (int i = 0; i<10; i++)
+	{
+		
+		delete top10list[i];
+		top10list[i] = nullptr;
+
+		top10list[i] = new HighScore(highScores.at(i).first, highScores.at(i).second);
+
+		
+	}
+}
+
+
+
+// sorts top 10 by score puts into top10list
+void Blackjack::sortScoresHighToLow() {
+
+	for (size_t i = 0; i<highScores.size(); i++){
+		for (size_t j = 0; j< highScores.size() -i -1; j++)
+		{
+			if (highScores.at(j).second < highScores.at(j+1).second)
+			{
+				int tempVal = highScores.at(j).second;
+				std::string tempName = highScores.at(j).first;
+
+				highScores.at(j).second = highScores.at(j+1).second;
+				highScores.at(j).first = highScores.at(j+1).first;
+
+				highScores.at(j+1).second = tempVal;
+				highScores.at(j+1).first = tempName;
+			}
+		}
+	}
+
+	return;
+}
+
+std::vector<std::pair<std::string, int>> Blackjack::readHighScores(const std::string filename)
+{
+	std::ifstream file;
+    file.open(filename);
+
+    if ( !file.is_open() )
+    {
+        throw std::runtime_error("File could not be opened.");
+    }
+
+	std::string line;
+
+    while (std::getline(file, line))
+    {
+		std::pair<std::string, int> currentPlayerInfo;
+
+		std::stringstream ss(line);
+		std::string name;
+		std::string score;
+		
+		std::getline(ss, name, ',');
+		currentPlayerInfo.first = name;
+
+		std::getline(ss, score);
+
+        try{
+            currentPlayerInfo.second = stoi(score);
+        }
+		
+        catch (const std::invalid_argument& error){
+            std::cout << "Error reading in: " << error.what() << std::endl;
+            currentPlayerInfo.second = 0;
+        }
+		highScores.push_back(currentPlayerInfo);
+    }
+
+    file.close();
+	return highScores;
+}
+
+
+void Blackjack::writeToFile()
+{
+	std::ofstream outputFile("blackjackHighScores.txt");
+	if (outputFile.is_open())
+	{
+		for (HighScore* h : top10list)
+		{
+			outputFile << h->getName() << ", " << h->getScore() << std::endl;
+		}
+	}
+	outputFile.close();
 }

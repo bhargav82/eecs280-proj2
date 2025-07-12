@@ -1,0 +1,10 @@
+Bhargav, 1000000
+jon, 2000
+jon, 2000
+john, 2000
+john, 2000
+n/a, 0
+n/a, 0
+n/a, 0
+n/a, 0
+n/a, 0

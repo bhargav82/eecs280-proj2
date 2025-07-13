@@ -5,10 +5,6 @@
 
 
 
-/* REQUIRES: 
-   EFFECTS: Creates a word object, stores random word as 
-   RESULTS: initializes Hangman game
-*/
 Hangman::Hangman() : Game()
 {
     std::string file = "wordList.txt";
@@ -27,7 +23,7 @@ Hangman::Hangman() : Game()
 int Hangman::play(const Player& p) 
 {
     drawBoard();
-    size_t uniqueLettersSize = unique_letters.size(); 
+    int uniqueLettersSize = unique_letters.size(); 
     while ((correctCounter <= (uniqueLettersSize)) && strikeCounter < 6)
     {
         if (correctCounter == uniqueLettersSize)
@@ -102,10 +98,6 @@ void Hangman::correctAndIncorrectGuesses(char userInputLetter, std::set<char>& a
 }
 
 
-/* REQUIRES: letter guess, vector of already guessed letters
-   EFFECTS: checks if user has inputted a valid letter -> if so, converts to lowercase and checks against guessed letters 
-   RESULTS: false if already guessed or not valid letter, true is new letter
-*/
 bool Hangman::checkGuess(char userGuess, std::set<char> guessedLetters)
 {
     if (!isalpha(userGuess))
@@ -145,12 +137,6 @@ void Hangman::resetGame() {
     unique_letters = wordUniqueLetters;
 
 }
-
-
-/* REQUIRES: filename as string
-   EFFECTS: if file can be opened, a vector of strings is created of lowercase words from text file, if not throws error
-   RESULTS: a vector of strings 
-*/
 const std::vector<std::string> Hangman::createWordList(const std::string& filename)
 {
 
@@ -176,12 +162,6 @@ const std::vector<std::string> Hangman::createWordList(const std::string& filena
     return wordList;
 }
 
-
-
-/* REQUIRES: vector of words
-   EFFECTS: creates a random int from 0 to 999  
-   RESULTS: word at random index of vector
-*/
 const std::string Hangman::randomWordGenerator(const std::vector<std::string>& wordList)
 {
     std::random_device rd;
@@ -191,11 +171,6 @@ const std::string Hangman::randomWordGenerator(const std::vector<std::string>& w
     return wordList.at(distribution(gen));
 }
 
-
-/* REQUIRES: keyword (randomly chosen), should be lowercase
-   EFFECTS: goes through word and creates a set of unique characters
-   RESULTS: set of chars, (sets are auto unique)
-*/
 std::set<char> Hangman::findUniqueLetters(std::string& keyword)
 {
     std::set<char> uniqueLetters;
@@ -207,11 +182,6 @@ std::set<char> Hangman::findUniqueLetters(std::string& keyword)
     return uniqueLetters;
 }
 
-
-
-// REQUIRES: nothing
-// MODIFIES: cout
-// EFFECTS: prints a menu displaying the rules for the Hangman game
 void Hangman::printHangmanMenu() {
     std::cout << "----------------------------------------------------" << std::endl;
     std::cout << "Welcome to Hangman!! Here are the rules of the game." << std::endl;
@@ -226,10 +196,6 @@ void Hangman::printHangmanMenu() {
     std::cout << "          ** Good luck, and have fun!! **           " << std::endl;
     std::cout << "----------------------------------------------------" << std::endl << std::endl;
 }
-
-// REQUIRES: nothing
-// MODIFIES: cout
-// EFFECTS: prints the hangman letters left to guess to the terminal
 void Hangman::printHangmanLettersLeft(std::vector<char>& remainingLetters, size_t size) {
     std::cout << "Remaining letters: ";
     for (size_t i = 0; i < size - 1; ++i) {
@@ -242,18 +208,14 @@ void Hangman::printHangmanLettersLeft(std::vector<char>& remainingLetters, size_
     std::cout << std::endl << "----------------------------------------------------" << std::endl;
 }
 
-
-// REQUIRES: the keyword and a vector of letters already guessed
-// MODIFIES: cout
-// EFFECTS: prints the hangman word with correctly guessed letters filled in
 void Hangman::printHangmanWord(std::string keyword, std::set<char> lettersGuessed)
 {
     std::vector<char> lettersGuessedVector(lettersGuessed.begin(), lettersGuessed.end());
     char letterToPrint;
 
-    for (auto i = 0; i < keyword.length(); ++i) {
+    for (size_t i = 0; i < keyword.length(); ++i) {
         bool letterMatch = false;
-        for (auto j = 0; j < lettersGuessedVector.size(); ++j) {
+        for (size_t j = 0; j < lettersGuessedVector.size(); ++j) {
             if (keyword[i] == lettersGuessedVector[j]) {
                 letterToPrint = lettersGuessedVector[j];
                 letterMatch = true;
@@ -273,11 +235,6 @@ void Hangman::printHangmanWord(std::string keyword, std::set<char> lettersGuesse
     std::cout << std::endl << "----------------------------------------------------" << std::endl;
 }
 
-
-
-// REQUIRES: nothing
-// MODIFIES: cout
-// EFFECTS: prints the hangman graphic to the terminal
 void Hangman::printHangmanGraphic(int strikeCount) {
     if (strikeCount == 0) {
         std::cout << "           ------     " << std::endl;
@@ -342,10 +299,6 @@ void Hangman::printHangmanGraphic(int strikeCount) {
     std::cout << std::endl;
 }
 
-/* REQUIRES: word (each word of text file)
-   EFFECTS: makes each letter lowercase
-   RESULTS: changes word in place to lowercase version
-*/
 void Hangman::wordToLower(std::string& word)
 {
     for (char& c : word)
@@ -356,13 +309,10 @@ void Hangman::wordToLower(std::string& word)
 }
 
 
-
 Hangman::~Hangman()
 {
     std::cout << "Hangman Destructor." << std::endl;
 }
-
-
 
 
 std::vector<std::pair<std::string, int>> Hangman::readHighScores(const std::string filename)

@@ -25,7 +25,7 @@ int blackjackPlayer::count() {
     int handValue = 0;
     bool hasAce = false;
 
-    for (size_t i = 0; i < handOfCards.getSize(); i++) 
+    for (int i = 0; i < handOfCards.getSize(); i++) 
     {
         
         if (handOfCards.atIndex(i).name == "Ace") 

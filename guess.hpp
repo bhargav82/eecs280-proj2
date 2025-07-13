@@ -7,7 +7,7 @@
 // minimize the amount of imports you have here, because this file might be included in a bunch
 // of other files that don't need all of the included files for the implementation of this class
 #include "game.hpp" 	// the Guess object inherits the Game object, so we need its header file
-
+#include <vector>
 // define some MACROS 
 #define GUESS_MIN 1		// mininum of the magic number distribution
 #define GUESS_MAX 100		// maximum of the magic number distribution

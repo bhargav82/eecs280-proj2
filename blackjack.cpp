@@ -1,6 +1,7 @@
 #include "blackjack.hpp"
 #include <chrono>
 #include <thread>
+#include <vector>
 #include <fstream>
 
 
@@ -16,7 +17,7 @@ Blackjack::Blackjack() : Game()
 
 
 
-    this->highScores = this->readHighScores("blackjackHighscores.txt");
+    this->highScores = this->readHighScores("blackjackHighScores.txt");
 
 	this->sortScoresHighToLow();
     this->updateScoreboard();           
